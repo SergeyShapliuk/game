@@ -33,7 +33,14 @@ const useScreenSize = () => {
         return `${screenSize.width * size / 390}px`;
     };
 
-    return {screenSize, responseFontSize};
+    const responseSize = (size: number) => {
+        const widthRatio = screenSize.width / 390;
+        const heightRatio = screenSize.height / 844;
+        const adaptiveRatio = Math.min(widthRatio, heightRatio);
+        return `${size * adaptiveRatio}px`;
+    };
+
+    return {screenSize, responseSize, responseFontSize};
 };
 
 export default useScreenSize;

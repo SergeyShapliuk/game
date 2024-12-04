@@ -10,7 +10,8 @@
     font-size: 40px;
     line-height: 47px;
     letter-spacing: 1.6px;
-    padding-top: 38px;
+    text-align: center;
+    /*padding-top: 38px;*/
 }
 
 .subTitle {
@@ -18,7 +19,7 @@
     font-size: 24px;
     font-weight: 900;
     line-height: 32.74px;
-    padding: 21px 65px 0 65px;
+    padding: 21px 65px 21px 65px;
 }
 
 .description {
@@ -26,4 +27,22 @@
     font-size: 18px;
     line-height: 25px;
     padding: 21px 33px 0 33px;
+}
+
+.scoreContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.scoreItemBlock {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.scoreItem {
+    color: #EFB84E;
+    font-family: 'Modak', serif;
+    box-shadow: 0 2px 1px 0 rgba(255, 255, 255, 0.11) inset, 0 4px 4px 0 #00000040;
+    margin-top: 7px;
 }
