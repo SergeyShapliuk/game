@@ -1,12 +1,13 @@
 import classes from "./GameComponent.module.css";
-import image from "../../assets/main-image.webp";
 import useScreenSize from "../../hooks/useScreenSize";
 import Score from "../ui/Score";
 import Button from "../ui/Button";
+import recipe from "../../assets/recipe-shadow.webp";
+import {LevelImage} from "../../common/levelImage";
 
 
 function StartGame({start}: { start: () => void }) {
-    const {responseSize} = useScreenSize();
+    const {screenSize, responseSize} = useScreenSize();
     return (
         <div className={classes.container}>
             <header>
@@ -20,7 +21,18 @@ function StartGame({start}: { start: () => void }) {
                     в СупПространство!
                 </div>
             </header>
-            <img src={image} alt={"Картинка"} style={{width: responseSize(238)}}/>
+            <div style={{position: "relative"}}>
+                <img src={LevelImage[0]} alt={"Картинка"} style={{width: responseSize(238), zIndex: 3}}/>
+                <img src={recipe} alt={"Картинка"}
+                     style={{
+                         position: "absolute",
+                         width: responseSize(100),
+                         left: "50%",
+                         transform: "translateX(87%)",
+                         bottom: "30%",
+                         zIndex: 0
+                     }}/>
+            </div>
             <div className={classes.description}
                  style={{fontSize: responseSize(18), lineHeight: responseSize(25)}}>
                 Я покажу тебе рецепт Деда Мороза,

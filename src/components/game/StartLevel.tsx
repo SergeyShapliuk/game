@@ -1,18 +1,18 @@
 import classes from "./GameComponent.module.css";
-import image from "../../assets/image-level.webp";
 import useScreenSize from "../../hooks/useScreenSize";
 import Score from "../ui/Score";
 import Button from "../ui/Button";
+import {LevelImage} from "../../common/levelImage";
 
 
-function StartLevel({level, onPress}: { level: number, onPress: () => void }) {
+function StartLevel({currentLevel, onPress}: { currentLevel: number, onPress: () => void }) {
     const {responseSize} = useScreenSize();
     return (
         <div className={classes.container}>
             <header>
                 <div className={classes.title}
                      style={{fontSize: responseSize(40), lineHeight: responseSize(47)}}>
-                    Поздрав
+                    Поздрав<br/>
                     лямба!
                 </div>
                 <div className={classes.subTitle}
@@ -21,7 +21,7 @@ function StartLevel({level, onPress}: { level: number, onPress: () => void }) {
                     на новый уровень!
                 </div>
             </header>
-            <img src={image} alt={"Картинка"} style={{width: responseSize(238)}}/>
+            <img src={LevelImage[currentLevel + 1]} alt={"Картинка"} style={{width: responseSize(238)}}/>
             <div className={classes.description}
                  style={{fontSize: responseSize(24), lineHeight: responseSize(29), fontWeight: "900"}}>
                 Новый заказ
@@ -29,7 +29,7 @@ function StartLevel({level, onPress}: { level: number, onPress: () => void }) {
             <div style={{padding: "7px 23px 23px 16px"}}>
                 <Score/>
             </div>
-            <Button text={`Уровень ${level}`} icon={true} onPress={onPress}/>
+            <Button text={`Уровень ${currentLevel + 1}`} icon={true} onPress={onPress}/>
         </div>
     );
 }

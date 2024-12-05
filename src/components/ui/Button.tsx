@@ -6,13 +6,14 @@ type ButtonProps = {
     onPress: () => void;
     text: string;
     icon?: boolean;
+    width: number;
 }
 
-function Button({onPress, text, icon}: ButtonProps) {
+function Button({onPress, text, icon, width}: ButtonProps) {
     const {responseSize} = useScreenSize();
     return (
         <motion.button whileTap={{scale: 0.85}} onTap={onPress} style={{
-            width: responseSize(227),
+            width: responseSize(width ? width : 227),
             height: responseSize(59),
             display: "inline-flex",
             justifyContent: "center",

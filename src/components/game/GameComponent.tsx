@@ -52,11 +52,12 @@ function GameComponent() {
         setLevelComplete(false);
         setLevelIndex(prevState => prevState + 1);
     };
+
     return (
         <>
             {!start && levelIndex === 0 && !levelComplete && <StartGame start={() => setStart(true)}/>}
             {!start && levelComplete &&
-            <StartLevel level={levelIndex + 2} onPress={levelStartHandler}/>}
+            <StartLevel currentLevel={levelItems[levelIndex].id} onPress={levelStartHandler}/>}
             {start && <Game levelItems={levelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
         </>
     );

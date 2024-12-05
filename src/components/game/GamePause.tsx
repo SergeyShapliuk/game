@@ -1,10 +1,10 @@
 import classes from "./GameComponent.module.css";
-import image from "../../assets/image-level.webp";
 import recipe from "../../assets/small-recipe.webp";
 import useScreenSize from "../../hooks/useScreenSize";
 import Button from "../ui/Button";
 import Panel from "../ui/Panel";
 import MemoMagnifierIcon from "../svg/SearchIcon";
+import {LevelImage} from "../../common/levelImage";
 
 
 function GamePause({star, level, resume}: { star: number, level: number, resume: () => void }) {
@@ -28,9 +28,9 @@ function GamePause({star, level, resume}: { star: number, level: number, resume:
                  style={{fontSize: responseSize(40), lineHeight: responseSize(63), marginTop: 25}}>
                 Пауза
             </div>
-            <img src={image} alt={"Картинка"} style={{width: responseSize(122), marginTop: 18}}/>
+            <img src={LevelImage[level - 1]} alt={"Картинка"} style={{width: responseSize(166), marginTop: 18}}/>
             <div className={classes.title}
-                 style={{fontSize: responseSize(40), lineHeight: responseSize(63), marginTop: 5}}>
+                 style={{fontSize: responseSize(40), lineHeight: responseSize(63), marginTop: 18}}>
                 Уровень
                 <div style={{
                     fontFamily: "Modak",

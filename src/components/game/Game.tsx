@@ -1,9 +1,18 @@
+import * as React from "react";
 import {useCallback, useEffect, useRef, useState} from "react";
 import classes from "./Game.module.css";
 
 import image from "../../assets/small-image.webp";
 import star from "../../assets/star.webp";
 import potTop from "../../assets/pot-top.webp";
+import potBottom from "../../assets/pot-bottom.webp";
+import carrot from "../../assets/carrot.webp";
+import broccoli from "../../assets/broccoli.webp";
+import chicken from "../../assets/chicken.webp";
+import chillPepper from "../../assets/chill-pepper.webp";
+import rice from "../../assets/rice.webp";
+import shrimp from "../../assets/shrimp.webp";
+import shroom from "../../assets/shroom.webp";
 import {motion} from "motion/react";
 import Score from "../ui/Score";
 import useScreenSize from "../../hooks/useScreenSize";
@@ -12,20 +21,22 @@ import Panel from "../ui/Panel";
 import GamePause from "./GamePause";
 import {LeveItems} from "./GameComponent";
 import {useCounter} from "../../common/ context/CounterProvider";
-import * as React from "react";
+import GameError from "./GameError";
 
 
-// const ingredients = [
-//     {id: 1, name: "meatball", icon: meatball},
-//     {id: 2, name: "pumpkin", icon: pumpkin},
-//     {id: 3, name: "garlic", icon: onion},
-//     {id: 4, name: "tomato", icon: tomato},
-//     {id: 4, name: "redPepper", icon: redPepper}
-// ];
+const otherIngredients = [
+    {name: "carrot", icon: carrot},
+    {name: "chicken", icon: chicken},
+    {name: "chillPepper", icon: chillPepper},
+    {name: "shrimp", icon: shrimp},
+    {name: "rice", icon: rice},
+    {name: "shroom", icon: shroom},
+    {name: "broccoli", icon: broccoli}
+];
 
 const ROWS = [10, 35, 60, 80];
-const swipeThreshold = 100; // Минимальная длина свайпа для срабатывания
-const minSwipeSpeed = 5;
+const swipeThreshold = 70; // Минимальная длина свайпа для срабатывания
+const minSwipeSpeed = 3;
 
 type GameProps = {
     levelItems: LeveItems;
@@ -33,7 +44,7 @@ type GameProps = {
 }
 
 function Game({levelItems, levelComplete}: GameProps) {
-    const {responseSize, responseFontSize} = useScreenSize();
+    const {screenSize, responseSize, responseFontSize} = useScreenSize();
     const {starCounter, setStarCounter} = useCounter();
 
     const constraintsRef = useRef<any>(null);
@@ -42,28 +53,42 @@ function Game({levelItems, levelComplete}: GameProps) {
     const startTouchTime = useRef<number>(0);
     const [fallingItems, setFallingItems] = useState<{ id: number, item: string, amount: number, x: number, y: number, icon: string }[]>([]);
     const [collected, setCollected] = useState<LeveItems>(levelItems);
+    const [collectedPot, setCollectedPot] = useState<{ id: number, item: string, amount: number, x: number, y: number, icon: string }>();
+    const [countStar, setCountStar] = useState<number>(starCounter);
     const [planeRowIndex, setPlaneRowIndex] = useState(1);
-    // const [planeRow, setPlaneRow] = useState(2);
-    // const [planeX, setPlaneX] = useState(0);
     const [fallingSpeed] = useState(0.2);
-    const [isPaused, setIsPaused] = useState(false);
+    const [isPaused, setIsPaused] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
 
     // console.log("targetPosition", planeRef.current?.getBoundingClientRect());
-    console.log("fallingItems", fallingItems);
+    // console.log("fallingItems", fallingItems);
     const generateFallingItems = () => {
         const xPosition = ROWS[Math.floor(Math.random() * ROWS.length)];
         // const randomItem = levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
         const itemsToAdd: any[] = [];
         const randomChoice = Math.random(); // Генерация случайного числа от 0 до 1
-        if (randomChoice < 0.5) {
-            // Вероятность 10% для звезды
-            itemsToAdd.push({
-                item: "star", // Уникальное имя звезды
-                id: new Date().getTime(), // Уникальный ID
-                x: xPosition, // Позиция по оси X
-                y: 0, // Начальная позиция Y
-                icon: star // Иконка для звезды
-            });
+        if (randomChoice < 0.7) {
+            // Вероятность 50% для звезды
+            const random = Math.random();
+            if (random < 0.5) {
+                itemsToAdd.push({
+                    item: "star", // Уникальное имя звезды
+                    id: new Date().getTime(), // Уникальный ID
+                    x: xPosition, // Позиция по оси X
+                    y: 0, // Начальная позиция Y
+                    icon: star // Иконка для звезды
+                });
+            } else {
+                const randomIndex = Math.floor(Math.random() * otherIngredients.length);
+                const randomItem = otherIngredients[randomIndex];
+                itemsToAdd.push({
+                    item: randomItem.name, // Уникальное имя звезды
+                    id: new Date().getTime(), // Уникальный ID
+                    x: xPosition, // Позиция по оси X
+                    y: 0, // Начальная позиция Y
+                    icon: randomItem.icon // Иконка для звезды
+                });
+            }
         } else {
             // Вероятность 90% для обычного предмета
             const randomIngredient =
@@ -93,7 +118,8 @@ function Game({levelItems, levelComplete}: GameProps) {
         const isComplete = collected.levelItems.some(item => item.amount > 0);
         if (!isComplete) {
             levelComplete();
-            sessionStorage.setItem("star", starCounter.toString());
+            setStarCounter(countStar);
+            sessionStorage.setItem("star", countStar.toString());
         }
     }, [collected]);
 
@@ -103,6 +129,21 @@ function Game({levelItems, levelComplete}: GameProps) {
 
         return () => clearInterval(interval);
     }, [isPaused]);
+
+    useEffect(() => {
+        if (collectedPot) {
+            const find = collectedPot.item === "star" || levelItems.levelItems.find(item => item.item === collectedPot.item);
+            if (!find) {
+                setIsError(true);
+                setIsPaused(true);
+                return;
+            }
+            const timer = setTimeout(() => {
+                setCollectedPot(null);
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [collectedPot]);
 
     useEffect(() => {
         let animationFrame: number;
@@ -116,29 +157,30 @@ function Game({levelItems, levelComplete}: GameProps) {
                             y: item.y + fallingSpeed // Увеличиваем позицию по вертикали
                         }))
                         .filter((item) => {
-                            // Получаем размеры самолета
+                            // Получаем размеры
                             const planeRect = planeRef.current && planeRef.current!.getBoundingClientRect();
                             if (!planeRect) return true;
 
-                            const planex = planeRect.left;
+                            const planeX = planeRect.left;
                             const planeY = planeRect.top;
                             const planeWidth = planeRect.width;
                             const planeHeight = planeRect.height;
 
                             // Преобразуем координаты предмета в пиксели
-                            const itemX = (item.x / 100) * window.innerWidth;
-                            const itemY = (item.y / 100) * window.innerHeight;
+                            const itemX = (item.x / 100) * screenSize.width;
+                            const itemY = (item.y / 100) * screenSize.height;
+
 
                             // Проверяем столкновение с самолетом
                             const isCollected =
-                                itemY >= planeY && // Предмет должен быть ниже верхней границы самолета
-                                itemY <= planeY + planeHeight && // Предмет должен быть выше нижней границы самолета
-                                itemX >= planex - planeWidth && // Предмет должен быть в пределах левой границы самолета
-                                itemX <= planex + planeWidth; // Предмет должен быть в пределах правой границы самолета
+                                itemX >= planeX && // Предмет должен быть правее левого края
+                                itemX <= planeX + planeWidth && // Предмет должен быть левее правого края
+                                itemY >= planeY && // Предмет ниже верхнего края
+                                itemY <= planeY + planeHeight; // Предмет выше нижнего края
 
                             if (isCollected) {
                                 if (item.item === "star") {
-                                    setStarCounter(prevCount => prevCount + 1);
+                                    setCountStar(prevCount => prevCount + 1);
                                 } else {
                                     setCollected((prev) => ({
                                         ...prev, // Оставляем остальные свойства объекта, включая id
@@ -147,12 +189,14 @@ function Game({levelItems, levelComplete}: GameProps) {
                                                 ? {...collectedItem, amount: collectedItem.amount - 1} // Уменьшаем количество
                                                 : collectedItem // Оставляем без изменений, если не совпало
                                         )
+
                                     }));
                                 }
+                                setCollectedPot(item);
                                 return false; // Удаляем предмет, если он собран
                             }
 
-                            return item.y < 200; // Оставляем предмет, если он не собран и не вышел за нижний край
+                            return item.y < screenSize.height; // Оставляем предмет, если он не собран и не вышел за нижний край
                         })
                 );
             }
@@ -245,13 +289,23 @@ function Game({levelItems, levelComplete}: GameProps) {
         };
     }, [handleKeyDown]);
 
+    const resumeGame = () => {
+        setFallingItems([]);
+        setCollected(levelItems);
+        setCollectedPot(undefined);
+        setCountStar(starCounter);
+        setIsPaused(false);
+        setIsError(false);
+    };
+
     return (
         <div>
             <div className={classes.container}>
-                {isPaused && <GamePause star={starCounter} level={collected.id} resume={() => setIsPaused(false)}/>}
+                {isPaused && !isError&& <GamePause star={countStar} level={collected.id} resume={() => setIsPaused(false)}/>}
+                {isError && <GameError icon={collectedPot?.icon} resume={resumeGame}/>}
                 <header className={classes.header}>
                     <Pause onPress={() => setIsPaused(true)}/>
-                    <Panel count={starCounter}/>
+                    <Panel count={countStar}/>
                     <div className={classes.level}>
                     <span style={{
                         color: "#6CA2FF",
@@ -282,39 +336,22 @@ function Game({levelItems, levelComplete}: GameProps) {
                                 animate={{left: `${ROWS[planeRowIndex] - 2}%`}}
                                 transition={{type: "tween"}}
                                 style={{width: responseSize(70)}}/>
+                    <motion.img ref={planeRef} src={potBottom} alt="" className={classes.plane}
+                                animate={{left: `${ROWS[planeRowIndex] - 2}%`}}
+                                transition={{type: "tween"}}
+                                style={{width: responseSize(70), zIndex: 2}}/>
+                    <motion.img src={collectedPot?.icon} alt="" className={classes.plane}
+                                animate={{left: `${ROWS[planeRowIndex]}%`}}
+                                transition={{type: "tween"}}
+                                style={{width: responseSize(38), bottom: 45, zIndex: 1}}/>
                     {fallingItems.map((item) => (
-                        <motion.div
-                            key={item.id}
-                            className={classes.fallingItem}
-                            style={{
-                                left: `${item.x}%`
-                            }}
-                            animate={{
-                                top: `${item.y}%`
-                            }}
-                            transition={{
-                                type: "tween"
-                                // duration: 1// Используем пружинную анимацию
-                                //     // stiffness: 100, // Жесткость пружины
-                                //     // damping: 25 // Затухание
-                            }}
-                        >
-                            <img src={item.icon} alt="" style={{width: responseSize(42), height: responseSize(42)}}/>
-                        </motion.div>
+                        <FallingItem key={item.id} item={item}/>
                     ))}
                 </div>
 
-                {/*<div className={classes.counter}>*/}
-                {/*{ingredients.map((ingredient) => (*/}
-                {/*    <div key={ingredient.name} className="countertem">*/}
-                {/*        <span>{ingredient.icon}</span>*/}
-                {/*        <span>x{collected[ingredient.name]}</span>*/}
-                {/*    </div>*/}
-                {/*))}*/}
                 <div style={{padding: "7px 23px 23px 16px"}}>
                     <Score items={collected.levelItems}/>
                 </div>
-                {/*</div>*/}
 
             </div>
         </div>
@@ -322,3 +359,28 @@ function Game({levelItems, levelComplete}: GameProps) {
 }
 
 export default Game;
+
+const FallingItem = ({item}: any) => {
+    const {responseSize} = useScreenSize();
+    return (
+        <div
+            key={item.id}
+            className={classes.fallingItem}
+            style={{
+                left: `${item.x}%`,
+                top: `${item.y}%`
+            }}
+            // animate={{
+            //     top: `${item.y}%`
+            // }}
+            // transition={{
+            //     type: "tween"
+            //     // duration: 1// Используем пружинную анимацию
+            //     //     // stiffness: 100, // Жесткость пружины
+            //     //     // damping: 25 // Затухание
+            // }}
+        >
+            <img src={item.icon} alt="" style={{width: responseSize(42), height: responseSize(42)}}/>
+        </div>
+    );
+};

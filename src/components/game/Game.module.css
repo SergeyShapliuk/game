@@ -42,8 +42,7 @@
 
 .plane {
     position: absolute;
-    bottom: 5%;
-    font-size: 3rem;
+    bottom: 7%;
     /*transition: left 0.1s ease;*/
 }
 
