@@ -2,13 +2,12 @@ import classes from "./GameComponent.module.css";
 import image from "../../assets/image-level.webp";
 import recipe from "../../assets/small-recipe.webp";
 import useScreenSize from "../../hooks/useScreenSize";
-import Score from "../ui/Score";
 import Button from "../ui/Button";
 import Panel from "../ui/Panel";
 import MemoMagnifierIcon from "../svg/SearchIcon";
 
 
-function GamePause({resume}: { resume: () => void }) {
+function GamePause({star, level, resume}: { star: number, level: number, resume: () => void }) {
     const {responseSize} = useScreenSize();
     return (
         <div style={{
@@ -23,7 +22,7 @@ function GamePause({resume}: { resume: () => void }) {
             zIndex: 3
         }}>
             <header>
-                <Panel/>
+                <Panel count={star}/>
             </header>
             <div className={classes.title}
                  style={{fontSize: responseSize(40), lineHeight: responseSize(63), marginTop: 25}}>
@@ -37,7 +36,7 @@ function GamePause({resume}: { resume: () => void }) {
                     fontFamily: "Modak",
                     fontSize: responseSize(68),
                     lineHeight: responseSize(71)
-                }}>2</div>
+                }}>{level}</div>
             </div>
             <div style={{
                 position: "relative",

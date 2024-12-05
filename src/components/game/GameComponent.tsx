@@ -1,5 +1,3 @@
-import classes from "./GameComponent.module.css";
-
 import StartGame from "./StartGame";
 import StartLevel from "./StartLevel";
 import Game from "./Game";
@@ -8,10 +6,11 @@ import tomato from "../../assets/tomato.webp";
 import meatball from "../../assets/meatball.webp";
 import onion from "../../assets/onion.webp";
 import pumpkin from "../../assets/pumpkin.webp";
+import {useState} from "react";
 
 export type LeveItems = {
     id: number,
-    levelItems: { item: string, amount: number }[]
+    levelItems: { item: string, amount: number, icon: string }[]
 }
 const levelItems: LeveItems[] = [
     {
@@ -25,15 +24,40 @@ const levelItems: LeveItems[] = [
             amount: 6,
             icon: meatball
         }, {item: "pumpkin", amount: 1, icon: pumpkin}]
+    }, {
+        id: 2,
+        levelItems: [{item: "onion", amount: 3, icon: onion}, {
+            item: "redPepper",
+            amount: 2,
+            icon: redPepper
+        }, {item: "tomato", amount: 4, icon: tomato}, {
+            item: "meatball",
+            amount: 7,
+            icon: meatball
+        }, {item: "pumpkin", amount: 2, icon: pumpkin}]
     }
 ];
 
 function GameComponent() {
+    const [start, setStart] = useState<boolean>(false);
+    const [levelIndex, setLevelIndex] = useState<number>(0);
+    const [levelComplete, setLevelComplete] = useState<boolean>(false);
+
+    const levelCompleteHandler = () => {
+        setLevelComplete(true);
+        setStart(false);
+    };
+    const levelStartHandler = () => {
+        setStart(true);
+        setLevelComplete(false);
+        setLevelIndex(prevState => prevState + 1);
+    };
     return (
         <>
-            {false && <StartGame/>}
-            {false && <StartLevel/>}
-            <Game levelItems={levelItems[0]}/>
+            {!start && levelIndex === 0 && !levelComplete && <StartGame start={() => setStart(true)}/>}
+            {!start && levelComplete &&
+            <StartLevel level={levelIndex + 2} onPress={levelStartHandler}/>}
+            {start && <Game levelItems={levelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
         </>
     );
 }

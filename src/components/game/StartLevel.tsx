@@ -5,7 +5,7 @@ import Score from "../ui/Score";
 import Button from "../ui/Button";
 
 
-function StartLevel() {
+function StartLevel({level, onPress}: { level: number, onPress: () => void }) {
     const {responseSize} = useScreenSize();
     return (
         <div className={classes.container}>
@@ -29,7 +29,7 @@ function StartLevel() {
             <div style={{padding: "7px 23px 23px 16px"}}>
                 <Score/>
             </div>
-            <Button text={`Уровень ${2}`} icon={true}/>
+            <Button text={`Уровень ${level}`} icon={true} onPress={onPress}/>
         </div>
     );
 }

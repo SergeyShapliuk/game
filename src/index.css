@@ -6,6 +6,12 @@
     color-scheme: light dark;
     color: #FFFFFF !important;
 
+    background: linear-gradient(90deg, #1C325C 0%, #172E55 52%, #162D54 79.5%, #162D54 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -24,15 +30,16 @@
 /*}*/
 
 body {
-    margin: 0;
-    display: flex;
-    place-items: center;
-    background-image: url("./assets/bg.webp");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    min-width: 320px;
+    width: 100%;
+    max-width: 453px;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
 }
 
 /*h1 {*/
@@ -64,17 +71,9 @@ button {
 /*}*/
 
 
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-
-    a:hover {
-        color: #747bff;
-    }
-
-    button {
-        background-color: #f9f9f9;
+@media (min-width: 1500px) {
+    body {
+        max-width: 45%;
+        min-height: 100vh;
     }
 }

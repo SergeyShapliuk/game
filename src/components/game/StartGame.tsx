@@ -5,7 +5,7 @@ import Score from "../ui/Score";
 import Button from "../ui/Button";
 
 
-function StartGame() {
+function StartGame({start}: { start: () => void }) {
     const {responseSize} = useScreenSize();
     return (
         <div className={classes.container}>
@@ -30,7 +30,7 @@ function StartGame() {
             <div style={{padding: "30px 23px 23px 16px"}}>
                 <Score/>
             </div>
-            <Button text={"Начать"}/>
+            <Button text={"Начать"} onPress={start}/>
         </div>
     );
 }

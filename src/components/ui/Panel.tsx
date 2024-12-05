@@ -2,7 +2,26 @@ import panel from "../../assets/panel.webp";
 import star from "../../assets/star.webp";
 
 
-function Panel() {
+function Panel({count}: { count: number }) {
+    function formatLargeNumber(number: number): string {
+        if (number < 10000) return number.toString();
+        if (number >= 1000000) {
+            const base = Math.floor(number / 1000000);
+            const remainder = Math.floor((number % 1000000) / 100000);
+            return remainder === 0 ? `${base}M` : `${base}M${remainder}`;
+        }
+
+        const base = Math.floor(number / 1000);
+        const remainder = number % 1000;
+
+        if (remainder === 0) {
+            return `${base}к`;
+        } else {
+            const suffix = Math.floor(remainder / 100);
+            return `${base}к${suffix}`;
+        }
+    }
+
     return (
         <div style={{
             position: "relative",
@@ -30,7 +49,7 @@ function Panel() {
                     textAlign: "center",
                     marginRight: 7
                 }}>
-            3244
+            {formatLargeNumber(count)}
         </span>
             </div>
         </div>

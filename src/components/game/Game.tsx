@@ -2,6 +2,8 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import classes from "./Game.module.css";
 
 import image from "../../assets/small-image.webp";
+import star from "../../assets/star.webp";
+import potTop from "../../assets/pot-top.webp";
 import {motion} from "motion/react";
 import Score from "../ui/Score";
 import useScreenSize from "../../hooks/useScreenSize";
@@ -9,6 +11,8 @@ import Pause from "../ui/Pause";
 import Panel from "../ui/Panel";
 import GamePause from "./GamePause";
 import {LeveItems} from "./GameComponent";
+import {useCounter} from "../../common/ context/CounterProvider";
+import * as React from "react";
 
 
 // const ingredients = [
@@ -19,74 +23,80 @@ import {LeveItems} from "./GameComponent";
 //     {id: 4, name: "redPepper", icon: redPepper}
 // ];
 
-const ROWS = [10, 30, 60, 80];
+const ROWS = [10, 35, 60, 80];
 const swipeThreshold = 100; // Минимальная длина свайпа для срабатывания
 const minSwipeSpeed = 5;
 
 type GameProps = {
-    levelItems: LeveItems
+    levelItems: LeveItems;
+    levelComplete: () => void;
 }
 
-function Game({levelItems}: GameProps) {
+function Game({levelItems, levelComplete}: GameProps) {
     const {responseSize, responseFontSize} = useScreenSize();
+    const {starCounter, setStarCounter} = useCounter();
 
     const constraintsRef = useRef<any>(null);
-    const planeRef = useRef<HTMLDivElement | null>(null);
-    const startTouchX = useRef<number | null>(null);
-    const startTouchTime = useRef<number | null>(null);
-    const [fallingItems, setFallingItems] = useState([]);
-    const [collected, setCollected] = useState({
-        carrot: 0,
-        pumpkin: 0,
-        garlic: 0,
-        tomato: 0
-    });
+    const planeRef = useRef<HTMLImageElement | null>(null);
+    const startTouchX = useRef<number>(0);
+    const startTouchTime = useRef<number>(0);
+    const [fallingItems, setFallingItems] = useState<{ id: number, item: string, amount: number, x: number, y: number, icon: string }[]>([]);
+    const [collected, setCollected] = useState<LeveItems>(levelItems);
     const [planeRowIndex, setPlaneRowIndex] = useState(1);
-    const [planeRow, setPlaneRow] = useState(2);
-    const [planeX, setPlaneX] = useState(0);
+    // const [planeRow, setPlaneRow] = useState(2);
+    // const [planeX, setPlaneX] = useState(0);
     const [fallingSpeed] = useState(0.2);
     const [isPaused, setIsPaused] = useState(false);
 
     // console.log("targetPosition", planeRef.current?.getBoundingClientRect());
-    console.log("fallingItems", collected);
+    console.log("fallingItems", fallingItems);
     const generateFallingItems = () => {
         const xPosition = ROWS[Math.floor(Math.random() * ROWS.length)];
-        const randomItem = levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
-        const itemsToAdd = [];
-        // ROWS.forEach((row) => {
-        //     const numItems = Math.floor(Math.random() * 3) + 1; // Генерация от 1 до 3 предметов в ряду
-        //     const rowDelay = Math.random() * 2000; // Рандомная задержка для ряда в миллисекундах (0-2000)
-        //     for (let i = 0; i < numItems; i++) {
-        const randomIngredient =
-            levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
-        itemsToAdd.push({
-            ...randomIngredient,
-            id: new Date().getTime(), // Уникальный id
-            x: xPosition, // Позиция по оси X
-            y: 0 // Начальная позиция по оси Y с задержкой
-            // rowDelay
-            // speed:2
-        });
-        // }
+        // const randomItem = levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
+        const itemsToAdd: any[] = [];
+        const randomChoice = Math.random(); // Генерация случайного числа от 0 до 1
+        if (randomChoice < 0.5) {
+            // Вероятность 10% для звезды
+            itemsToAdd.push({
+                item: "star", // Уникальное имя звезды
+                id: new Date().getTime(), // Уникальный ID
+                x: xPosition, // Позиция по оси X
+                y: 0, // Начальная позиция Y
+                icon: star // Иконка для звезды
+            });
+        } else {
+            // Вероятность 90% для обычного предмета
+            const randomIngredient =
+                levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
+            itemsToAdd.push({
+                ...randomIngredient,
+                id: new Date().getTime(), // Уникальный ID
+                x: xPosition, // Позиция по оси X
+                y: 0 // Начальная позиция Y
+            });
+        }
+        // const randomIngredient =
+        //     levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
+        // itemsToAdd.push({
+        //     ...randomIngredient,
+        //     id: new Date().getTime(), // Уникальный id
+        //     x: xPosition, // Позиция по оси X
+        //     y: 0 // Начальная позиция по оси Y с задержкой
+        //     // rowDelay
+        //     // speed:2
         // });
         setFallingItems((prevItems) => [...prevItems, ...itemsToAdd]);
     };
 
-    const animateFallingItems = useCallback(() => {
-        fallingItems.forEach((item) => {
-            setTimeout(() => {
-                // Логика анимации падения для каждого предмета
-                setFallingItems((prevItems) =>
-                    prevItems.map((prevItem) =>
-                        prevItem.id === item.id
-                            ? {...prevItem, y: prevItem.y + 10} // Обновляем позицию по Y
-                            : prevItem
-                    )
-                );
-            }, item.rowDelay); // Используем задержку для ряда
-        });
-    }, [fallingItems]);
     // Добавляем падающие предметы
+    useEffect(() => {
+        const isComplete = collected.levelItems.some(item => item.amount > 0);
+        if (!isComplete) {
+            levelComplete();
+            sessionStorage.setItem("star", starCounter.toString());
+        }
+    }, [collected]);
+
     useEffect(() => {
         if (isPaused) return;
         const interval = setInterval(generateFallingItems, 1000); // Интервал от 1 до 3 секунд
@@ -95,7 +105,7 @@ function Game({levelItems}: GameProps) {
     }, [isPaused]);
 
     useEffect(() => {
-        let animationFrame;
+        let animationFrame: number;
 
         const animate = () => {
             if (!isPaused) {
@@ -127,10 +137,18 @@ function Game({levelItems}: GameProps) {
                                 itemX <= planex + planeWidth; // Предмет должен быть в пределах правой границы самолета
 
                             if (isCollected) {
-                                setCollected((prev) => ({
-                                    ...prev,
-                                    [item.name]: (prev[item.name] || 0) + 1
-                                }));
+                                if (item.item === "star") {
+                                    setStarCounter(prevCount => prevCount + 1);
+                                } else {
+                                    setCollected((prev) => ({
+                                        ...prev, // Оставляем остальные свойства объекта, включая id
+                                        levelItems: prev.levelItems.map((collectedItem) =>
+                                            collectedItem.item === item.item && collectedItem.amount > 0
+                                                ? {...collectedItem, amount: collectedItem.amount - 1} // Уменьшаем количество
+                                                : collectedItem // Оставляем без изменений, если не совпало
+                                        )
+                                    }));
+                                }
                                 return false; // Удаляем предмет, если он собран
                             }
 
@@ -149,19 +167,19 @@ function Game({levelItems}: GameProps) {
     }, [fallingSpeed, isPaused]);
 
     // Управление самолетом через мышь
-    const handleMouseMove = useCallback((e) => {
-        const container = e.target.getBoundingClientRect();
-        const x = ((e.clientX - container.left) / container.width) * 100;
-        // Находим ближайший ряд
-        const closestRow = ROWS.reduce(
-            (closest, row, idx) =>
-                Math.abs(row - x) < Math.abs(ROWS[closest] - x) ? idx : closest,
-            0
-        );
-        setPlaneRow(closestRow); // Устанавливаем целевой ряд
-    }, []);
+    // const handleMouseMove = useCallback((e) => {
+    //     const container = e.target.getBoundingClientRect();
+    //     const x = ((e.clientX - container.left) / container.width) * 100;
+    //     // Находим ближайший ряд
+    //     const closestRow = ROWS.reduce(
+    //         (closest, row, idx) =>
+    //             Math.abs(row - x) < Math.abs(ROWS[closest] - x) ? idx : closest,
+    //         0
+    //     );
+    //     setPlaneRow(closestRow); // Устанавливаем целевой ряд
+    // }, []);
 
-    const movePlane = (direction) => {
+    const movePlane = (direction: number) => {
         setPlaneRowIndex((prevIndex) => {
             const newIndex = prevIndex + direction;
             if (newIndex < 0 || newIndex >= ROWS.length) return prevIndex; // Ограничиваем движение
@@ -170,7 +188,7 @@ function Game({levelItems}: GameProps) {
     };
 
     const handleKeyDown = useCallback(
-        (event) => {
+        (event: KeyboardEvent) => {
             if (event.code === "ArrowLeft" || event.code === "KeyA") {
                 movePlane(-1); // Влево
             } else if (event.code === "ArrowRight" || event.code === "KeyD") {
@@ -180,16 +198,16 @@ function Game({levelItems}: GameProps) {
         []
     );
 
-    const handleTouchStart = (e) => {
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
         const touchX = e.touches[0].clientX; // Сохраняем начальную точку свайпа
         startTouchX.current = touchX;
         startTouchTime.current = Date.now();
     };
 
     // Движение пальца
-    const handleTouchMove = (e) => {
-        const touchX = e.touches ? e.touches[0].clientX : e.clientX; // Получаем X-координату свайпа или мыши
-        if (startTouchX.current === null) {
+    const handleTouchMove = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+        const touchX = "touches" in e ? e.touches[0].clientX : e.clientX; // Получаем X-координату свайпа или мыши
+        if (startTouchX.current === 0) {
             startTouchX.current = touchX; // Сохраняем начальную точку
         }
         const deltaX = touchX - startTouchX.current; // Считаем смещение
@@ -206,15 +224,15 @@ function Game({levelItems}: GameProps) {
             }
             // setPlaneX((prevX) => prevX + deltaX); // Обновляем положение самолета по оси X
             // startTouchX.current = touchX; // Обновляем начальную точку для следующего движения
-            startTouchX.current = null;
-            startTouchTime.current = null;
+            startTouchX.current = 0;
+            startTouchTime.current = 0;
         }
     };
 
     // Завершение жеста
-    const handleTouchEnd = () => {
-        startTouchX.current = null; // Сбрасываем начальную точку
-    };
+    // const handleTouchEnd = () => {
+    //     startTouchX.current = null; // Сбрасываем начальную точку
+    // };
 
     // Добавляем обработку событий для мыши и свайпов
     useEffect(() => {
@@ -230,17 +248,17 @@ function Game({levelItems}: GameProps) {
     return (
         <div>
             <div className={classes.container}>
-                {isPaused && <GamePause resume={() => setIsPaused(false)}/>}
+                {isPaused && <GamePause star={starCounter} level={collected.id} resume={() => setIsPaused(false)}/>}
                 <header className={classes.header}>
                     <Pause onPress={() => setIsPaused(true)}/>
-                    <Panel/>
+                    <Panel count={starCounter}/>
                     <div className={classes.level}>
                     <span style={{
                         color: "#6CA2FF",
                         fontFamily: "Modak",
                         fontSize: responseFontSize(16),
                         lineHeight: responseFontSize(24)
-                    }}>{"Yp.1"}</span>
+                    }}>{`Yp.${collected.id}`}</span>
                         <div style={{
                             width: 58,
                             height: 58,
@@ -259,21 +277,11 @@ function Game({levelItems}: GameProps) {
                      onTouchMove={handleTouchMove}
                     // onTouchEnd={handleTouchEnd}
                      className={classes.gameContainer}>
-                    <div
-                        ref={planeRef}
-                        // drag="x"
-                        // dragMomentum={false}
-                        // dragTransition={{velocity: 0.1}}
-                        // dragConstraints={constraintsRef}
-                        className={classes.plane}
-                        // animate={{left: `${startTouchX?.current}px`}} // Анимируем положение самолета
-                        // transition={{type: "spring", stiffness: 300, damping: 25}}
-                        // style={{left: `${planeX}px`}}
-                        style={{left: `${ROWS[planeRowIndex]}%`}}
-                        // style={{ position: 'absolute', top: '50%' }}
-                    >
-                        ✈️
-                    </div>
+
+                    <motion.img ref={planeRef} src={potTop} alt="" className={classes.plane}
+                                animate={{left: `${ROWS[planeRowIndex] - 2}%`}}
+                                transition={{type: "tween"}}
+                                style={{width: responseSize(70)}}/>
                     {fallingItems.map((item) => (
                         <motion.div
                             key={item.id}
@@ -304,7 +312,7 @@ function Game({levelItems}: GameProps) {
                 {/*    </div>*/}
                 {/*))}*/}
                 <div style={{padding: "7px 23px 23px 16px"}}>
-                    <Score items={levelItems.levelItems}/>
+                    <Score items={collected.levelItems}/>
                 </div>
                 {/*</div>*/}
 
