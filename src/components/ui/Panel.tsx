@@ -1,8 +1,11 @@
 import panel from "../../assets/panel.webp";
 import star from "../../assets/star.webp";
+import useScreenSize from "../../hooks/useScreenSize";
 
 
 function Panel({count}: { count: number }) {
+    const {responseSize} = useScreenSize();
+
     function formatLargeNumber(number: number): string {
         if (number < 10000) return number.toString();
         if (number >= 1000000) {
@@ -29,7 +32,7 @@ function Panel({count}: { count: number }) {
             justifyContent: "center",
             alignItems: "center"
         }}>
-            <img src={panel} alt="" style={{display: "block"}}/>
+            <img src={panel} alt="" style={{display: "block", width: responseSize(137)}}/>
             <div style={{
                 position: "absolute",
                 width: "80%",
@@ -37,14 +40,14 @@ function Panel({count}: { count: number }) {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                gap: "7px" // Отступы между элементами
+                gap: responseSize(7)
             }}>
-                <img src={star} alt="" style={{width: 30, height: 31}}/>
+                <img src={star} alt="" style={{width: responseSize(30), height: responseSize(31)}}/>
                 <span style={{
                     flex: 1,
                     color: "#772E5F",
                     fontFamily: "Modak",
-                    fontSize: 27,
+                    fontSize: responseSize(27),
                     lineHeight: "41px",
                     textAlign: "center",
                     marginRight: 7

@@ -4,8 +4,6 @@ import classes from "./Game.module.css";
 
 import image from "../../assets/small-image.webp";
 import star from "../../assets/star.webp";
-import potTop from "../../assets/pot-top.webp";
-import potBottom from "../../assets/pot-bottom.webp";
 import carrot from "../../assets/carrot.webp";
 import broccoli from "../../assets/broccoli.webp";
 import chicken from "../../assets/chicken.webp";
@@ -19,9 +17,10 @@ import useScreenSize from "../../hooks/useScreenSize";
 import Pause from "../ui/Pause";
 import Panel from "../ui/Panel";
 import GamePause from "./GamePause";
-import {LeveItems} from "./GameComponent";
 import {useCounter} from "../../common/ context/CounterProvider";
 import GameError from "./GameError";
+import {LeveItems} from "../../data/LevelItems";
+import Pot from "./Pot";
 
 
 const otherIngredients = [
@@ -33,6 +32,7 @@ const otherIngredients = [
     {name: "shroom", icon: shroom},
     {name: "broccoli", icon: broccoli}
 ];
+
 
 const ROWS = [10, 35, 60, 80];
 const swipeThreshold = 70; // Минимальная длина свайпа для срабатывания
@@ -139,7 +139,7 @@ function Game({levelItems, levelComplete}: GameProps) {
                 return;
             }
             const timer = setTimeout(() => {
-                setCollectedPot(null);
+                setCollectedPot(undefined);
             }, 1000);
             return () => clearTimeout(timer);
         }
@@ -299,62 +299,53 @@ function Game({levelItems, levelComplete}: GameProps) {
     };
 
     return (
-        <div>
-            <div className={classes.container}>
-                {isPaused && !isError&& <GamePause star={countStar} level={collected.id} resume={() => setIsPaused(false)}/>}
-                {isError && <GameError icon={collectedPot?.icon} resume={resumeGame}/>}
-                <header className={classes.header}>
-                    <Pause onPress={() => setIsPaused(true)}/>
-                    <Panel count={countStar}/>
-                    <div className={classes.level}>
+        <motion.div initial={{opacity: 0, y: 20}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: 20}}
+                    transition={{duration: 0.5}} className={classes.container}>
+            {isPaused && !isError &&
+            <GamePause star={countStar} level={collected.id} resume={() => setIsPaused(false)}/>}
+            {isError && <GameError icon={collectedPot?.icon} resume={resumeGame}/>}
+            <header className={classes.header}>
+                <Pause onPress={() => setIsPaused(true)}/>
+                <Panel count={countStar}/>
+                <div className={classes.level} style={{gap: responseSize(7)}}>
                     <span style={{
                         color: "#6CA2FF",
                         fontFamily: "Modak",
                         fontSize: responseFontSize(16),
                         lineHeight: responseFontSize(24)
                     }}>{`Yp.${collected.id}`}</span>
-                        <div style={{
-                            width: 58,
-                            height: 58,
-                            display: "inline-flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            border: "#6CA2FF solid 3px",
-                            borderRadius: 50
-                        }}>
-                            <img src={image} alt="" style={{marginBottom: 15}}/>
-                        </div>
+                    <div style={{
+                        width: responseSize(58),
+                        height: responseSize(58),
+                        display: "inline-flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "#6CA2FF solid 3px",
+                        borderRadius: responseSize(50)
+                    }}>
+                        <img src={image} alt="" style={{width: responseSize(58), marginBottom: responseSize(15)}}/>
                     </div>
-                </header>
-                <div ref={constraintsRef}
-                     onTouchStart={handleTouchStart}
-                     onTouchMove={handleTouchMove}
-                    // onTouchEnd={handleTouchEnd}
-                     className={classes.gameContainer}>
-
-                    <motion.img ref={planeRef} src={potTop} alt="" className={classes.plane}
-                                animate={{left: `${ROWS[planeRowIndex] - 2}%`}}
-                                transition={{type: "tween"}}
-                                style={{width: responseSize(70)}}/>
-                    <motion.img ref={planeRef} src={potBottom} alt="" className={classes.plane}
-                                animate={{left: `${ROWS[planeRowIndex] - 2}%`}}
-                                transition={{type: "tween"}}
-                                style={{width: responseSize(70), zIndex: 2}}/>
-                    <motion.img src={collectedPot?.icon} alt="" className={classes.plane}
-                                animate={{left: `${ROWS[planeRowIndex]}%`}}
-                                transition={{type: "tween"}}
-                                style={{width: responseSize(38), bottom: 45, zIndex: 1}}/>
-                    {fallingItems.map((item) => (
-                        <FallingItem key={item.id} item={item}/>
-                    ))}
                 </div>
+            </header>
+            <div ref={constraintsRef}
+                 onTouchStart={handleTouchStart}
+                 onTouchMove={handleTouchMove}
+                // onTouchEnd={handleTouchEnd}
+                 className={classes.gameContainer}>
 
-                <div style={{padding: "7px 23px 23px 16px"}}>
-                    <Score items={collected.levelItems}/>
-                </div>
-
+                <Pot row={ROWS[planeRowIndex]} collectedPot={collectedPot?.icon} ref={planeRef}/>
+                {fallingItems.map((item) => (
+                    <FallingItem key={item.id} item={item}/>
+                ))}
             </div>
-        </div>
+
+            <div style={{padding: "7px 23px 23px 16px"}}>
+                <Score items={collected.levelItems}/>
+            </div>
+
+        </motion.div>
     );
 }
 

@@ -1,5 +1,6 @@
 .container {
-    width: 100vw;
+    position: relative;
+    width: 100%;
     height: 100vh;
     overflow: hidden;
 }
@@ -21,7 +22,6 @@
 .level {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
 }
 
 .gameContainer {

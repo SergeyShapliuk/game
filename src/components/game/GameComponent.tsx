@@ -1,44 +1,16 @@
 import StartGame from "./StartGame";
 import StartLevel from "./StartLevel";
 import Game from "./Game";
-import redPepper from "../../assets/red-pepper.webp";
-import tomato from "../../assets/tomato.webp";
-import meatball from "../../assets/meatball.webp";
-import onion from "../../assets/onion.webp";
-import pumpkin from "../../assets/pumpkin.webp";
 import {useState} from "react";
+import FirstComplete from "./FirstComplete";
+import {LevelItems} from "../../data/LevelItems";
+import FinishGame from "./FinishGame";
+import {useCounter} from "../../common/ context/CounterProvider";
 
-export type LeveItems = {
-    id: number,
-    levelItems: { item: string, amount: number, icon: string }[]
-}
-const levelItems: LeveItems[] = [
-    {
-        id: 1,
-        levelItems: [{item: "onion", amount: 3, icon: onion}, {
-            item: "redPepper",
-            amount: 1,
-            icon: redPepper
-        }, {item: "tomato", amount: 3, icon: tomato}, {
-            item: "meatball",
-            amount: 6,
-            icon: meatball
-        }, {item: "pumpkin", amount: 1, icon: pumpkin}]
-    }, {
-        id: 2,
-        levelItems: [{item: "onion", amount: 3, icon: onion}, {
-            item: "redPepper",
-            amount: 2,
-            icon: redPepper
-        }, {item: "tomato", amount: 4, icon: tomato}, {
-            item: "meatball",
-            amount: 7,
-            icon: meatball
-        }, {item: "pumpkin", amount: 2, icon: pumpkin}]
-    }
-];
 
 function GameComponent() {
+    const {starCounter} = useCounter();
+
     const [start, setStart] = useState<boolean>(false);
     const [levelIndex, setLevelIndex] = useState<number>(0);
     const [levelComplete, setLevelComplete] = useState<boolean>(false);
@@ -56,9 +28,16 @@ function GameComponent() {
     return (
         <>
             {!start && levelIndex === 0 && !levelComplete && <StartGame start={() => setStart(true)}/>}
-            {!start && levelComplete &&
-            <StartLevel currentLevel={levelItems[levelIndex].id} onPress={levelStartHandler}/>}
-            {start && <Game levelItems={levelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
+            {!start && levelComplete && levelIndex > 0 && levelIndex > 14 &&
+            <StartLevel currentLevel={LevelItems[levelIndex].id} onPress={levelStartHandler}/>}
+            {start && <Game levelItems={LevelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
+            {!start && levelComplete && levelIndex === 0 &&
+            <FirstComplete currentLevel={LevelItems[levelIndex].id} onPress={levelStartHandler}/>}
+            {!start && levelIndex === 14 && levelComplete && <FinishGame star={starCounter} onPress={() => {
+                setStart(true);
+                setLevelComplete(false);
+                setLevelIndex(0);
+            }}/>}
         </>
     );
 }

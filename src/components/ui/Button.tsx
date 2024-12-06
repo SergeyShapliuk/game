@@ -6,7 +6,7 @@ type ButtonProps = {
     onPress: () => void;
     text: string;
     icon?: boolean;
-    width: number;
+    width?: number;
 }
 
 function Button({onPress, text, icon, width}: ButtonProps) {
@@ -19,11 +19,11 @@ function Button({onPress, text, icon, width}: ButtonProps) {
             justifyContent: "center",
             alignItems: "center",
             background: "linear-gradient(180deg, #F2DEB9 0%, #DABB98 100%)",
-            borderRadius: 50,
+            borderRadius: responseSize(50),
             boxShadow: "0px 1px 0px 0px #FFFFFF96",
-            gap: 7
+            gap: responseSize(7)
         }}>
-            {icon && <img src={play} alt=""/>}
+            {icon && <img src={play} alt="" style={{width: responseSize(27)}}/>}
             <div style={{
                 color: "#876C46",
                 fontFamily: "inherit",
