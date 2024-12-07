@@ -7,7 +7,7 @@
     color: #FFFFFF !important;
 
     background: linear-gradient(90deg, #1C325C 0%, #172E55 52%, #162D54 79.5%, #162D54 100%);
-    min-height: 100vh;
+    /*min-height: 100vh;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,7 +31,7 @@
 
 body {
     width: 100%;
-    max-width: 453px;
+    /*max-width: 453px;*/
     min-height: 100vh;
     /*display: flex;*/
     /*flex-direction: column;*/
@@ -69,12 +69,12 @@ button {
 /*button:focus-visible {*/
 /*    outline: 4px auto -webkit-focus-ring-color;*/
 /*}*/
-/*@media (min-width: 1024px) {*/
-/*    body {*/
-/*        max-width: 453px;*/
-/*        min-height: 100vh;*/
-/*    }*/
-/*}*/
+@media (min-width: 1024px) {
+    body {
+        max-width: 453px;
+        min-height: 100vh;
+    }
+}
 
 @media (min-width: 1513px) {
     body {

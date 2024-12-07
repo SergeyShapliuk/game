@@ -28,7 +28,7 @@ const Pot = React.forwardRef<HTMLDivElement, { row: number, collectedPot: string
     }, [images.length]);
 
     return (
-        <motion.div ref={ref} animate={{left: `${row - 2.5}%`}} transition={{type: "tween"}}
+        <motion.div ref={ref} animate={{left: `${row}%`}} transition={{type: "tween"}}
                     className={classes.plane} style={{width: responseSize(70), height: responseSize(39)}}>
             <img src={potTop} alt=""
                  className={classes.plane}
@@ -55,7 +55,8 @@ const Pot = React.forwardRef<HTMLDivElement, { row: number, collectedPot: string
                             bottom: responseSize(-40),
                             backgroundImage: `url(${images[currentImageIndex]})`,
                             backgroundSize: "cover",
-                            backgroundPosition: "center"
+                            backgroundPosition: "center",
+                            mixBlendMode: "color-dodge"
                         }}
                         transition={{type: "tween", duration: 1}}
             />
