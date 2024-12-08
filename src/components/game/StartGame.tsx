@@ -14,7 +14,7 @@ function StartGame({start}: { start: () => void }) {
                     animate={{opacity: 1, y: 0}}
                     exit={{opacity: 0, y: 20}}
                     transition={{duration: 0.5}} className={classes.container}>
-            <header>
+            <header style={{paddingTop: responseSize(38)}}>
                 <div className={classes.title}
                      style={{fontSize: responseSize(40), lineHeight: responseSize(47)}}>
                     Привет!
@@ -25,7 +25,7 @@ function StartGame({start}: { start: () => void }) {
                     в СупПространство!
                 </div>
             </header>
-            <div style={{position: "relative", paddingBottom: responseSize(113)}}>
+            <div style={{position: "relative", paddingBottom: responseSize(36)}}>
                 <img src={LevelImage[0]} alt={"Картинка"} style={{width: responseSize(238), zIndex: 3}}/>
                 <img src={recipe} alt={"Картинка"}
                      style={{
@@ -41,7 +41,6 @@ function StartGame({start}: { start: () => void }) {
                  style={{
                      fontSize: responseSize(18),
                      lineHeight: responseSize(25),
-                     marginTop: responseSize(21),
                      paddingLeft: responseSize(33),
                      paddingRight: responseSize(33)
                  }}>
@@ -51,15 +50,20 @@ function StartGame({start}: { start: () => void }) {
             </div>
             <div style={{
                 alignSelf: "stretch",
-                padding: "30px 23px 23px 16px",
-                paddingTop: responseSize(30),
-                paddingRight: responseSize(23),
-                paddingLeft: responseSize(16),
-                paddingBottom: responseSize(32)
+                marginTop: "auto",
+                marginBottom: responseSize(42)
             }}>
-                <Score/>
+                <div style={{
+                    // padding: "30px 23px 23px 16px",
+                    paddingTop: responseSize(30),
+                    paddingRight: responseSize(23),
+                    paddingLeft: responseSize(16),
+                    paddingBottom: responseSize(23)
+                }}>
+                    <Score/>
+                </div>
+                <Button text={"Начать"} onPress={start}/>
             </div>
-            <Button text={"Начать"} onPress={start}/>
         </motion.div>
     );
 }

@@ -6,48 +6,36 @@ import tomato from "../../assets/bg-tomato.webp";
 import carrot from "../../assets/bg-carrot.webp";
 import useScreenSize from "../../hooks/useScreenSize";
 import {useService} from "../../common/ context/ServiceProvider";
+import stars1 from "../../assets/stars1.webp";
+import stars2 from "../../assets/stars2.webp";
+import {useEffect, useState} from "react";
+import Stars from "./Stars";
+
 
 function Effect() {
     const {isAnimation} = useService();
     const {screenSize, responseSize} = useScreenSize();
-    // const x = useMotionValue(0)
-    // console.log(x)
-    // const handleAnimationComplete = (latest) => {
-    //     console.log({ x: latest.x, y: latest.y });
-    // };
+
+    const min = 20;
+    const max = 35;
     return (
         <>
             {isAnimation ? (
                 <>
-                    <motion.div
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100vh",
-                            backgroundImage: `url(${stars})`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "repeat-y"
-                        }}
-                        animate={{backgroundPositionY: ["0%", "-100%"]}}
-                        transition={{
-                            duration: 10,
-                            repeat: Infinity,
-                            repeatType: "loop",
-                            ease: "linear"
-                        }}
-                    />
+                    <Stars/>
                     <motion.img src={bowl2} alt={""}
                         // initial={{x: 0, y: 0}}
                                 animate={{
                                     x: ["0%", "-10%", "10%", "-10%", "0%"],
-                                    y: [Math.floor(Math.random() * -100), screenSize.height]
+                                    y: [-screenSize.height / 4, screenSize.height],
+                                    rotate: [0, 360]
                                 }}
                                 transition={{
-                                    duration: 15,
+                                    duration: Math.random() * (max - min) + min,
                                     repeat: Infinity,
-                                    repeatType: "loop"
+                                    repeatType: "loop",
+                                    delay: Math.random() * 10,
+                                    ease: "linear"
                                 }}
                         // onAnimationComplete={handleAnimationComplete}
                                 style={{
@@ -57,15 +45,18 @@ function Effect() {
                                     zIndex: 0
                                 }}/>
                     <motion.img src={bowl1} alt={""}
-                                // initial={{x: 0, y: 0}}
+                        // initial={{x: 0, y: 0}}
                                 animate={{
                                     x: ["0%", "-10%", "10%", "-10%", "0%"],
-                                    y: [Math.floor(Math.random() * -300), screenSize.height]
+                                    y: [-screenSize.height / 4, screenSize.height],
+                                    rotate: [0, 360]
                                 }}
                                 transition={{
-                                    duration: 25,
+                                    duration: Math.random() * (max - min) + min,
                                     repeat: Infinity,
-                                    repeatType: "loop"
+                                    repeatType: "loop",
+                                    delay: Math.random() * 10,
+                                    ease: "linear"
                                 }}
                                 style={{
                                     position: "absolute",
@@ -74,15 +65,18 @@ function Effect() {
                                     zIndex: 0
                                 }}/>
                     <motion.img src={tomato} alt={""}
-                                // initial={{x: 0, y: 0}}
+                        // initial={{x: 0, y: 0}}
                                 animate={{
-                                    x: ["0%", "-10%", "10%", "-10%", "0%"],
-                                    y: [Math.floor(Math.random() * -400), screenSize.height]
+                                    x: ["0%", "-15%", "15%", "-15%", "0%"],
+                                    y: [-screenSize.height / 4, screenSize.height],
+                                    rotate: [0, 360]
                                 }}
                                 transition={{
-                                    duration: 30,
+                                    duration: Math.random() * (max - min) + min,
                                     repeat: Infinity,
-                                    repeatType: "loop"
+                                    repeatType: "loop",
+                                    delay: Math.random() * 10,
+                                    ease: "linear"
                                 }}
                                 style={{
                                     position: "absolute",
@@ -91,15 +85,18 @@ function Effect() {
                                     zIndex: 0
                                 }}/>
                     <motion.img src={carrot} alt={""}
-                                // initial={{x: 0, y: 0}}
+                        // initial={{x: 0, y: 0}}
                                 animate={{
                                     x: ["0%", "-10%", "10%", "-10%", "0%"],
-                                    y: [Math.floor(Math.random() * -500), screenSize.height]
+                                    y: [-screenSize.height / 4, screenSize.height],
+                                    rotate: [0, 360]
                                 }}
                                 transition={{
-                                    duration: 35,
+                                    duration: Math.random() * (max - min) + min,
                                     repeat: Infinity,
-                                    repeatType: "loop"
+                                    repeatType: "loop",
+                                    delay: Math.random() * 10,
+                                    ease: "linear"
                                 }}
                                 style={{
                                     position: "absolute",

@@ -375,7 +375,7 @@ function Game({levelItems, levelComplete}: GameProps) {
             {isPaused && !isError &&
             <GamePause star={countStar} level={collected.id} resume={() => setPaused(false)}/>}
             {isError && <GameError icon={collectedPot?.icon} resume={resumeGame}/>}
-            <header className={classes.header}>
+            <header className={classes.header} style={{marginTop: responseSize(17)}}>
                 <Pause onPress={() => setPaused(true)}/>
                 <Panel count={countStar}/>
                 <div className={classes.level} style={{gap: responseSize(7)}}>
@@ -411,7 +411,12 @@ function Game({levelItems, levelComplete}: GameProps) {
                 ))}
             </div>
 
-            <div style={{padding: "7px 23px 23px 16px"}}>
+            <div style={{
+                marginTop: "auto",
+                alignSelf: "stretch",
+                paddingRight: responseSize(23),
+                paddingLeft: responseSize(16)
+            }}>
                 <Score items={collected.levelItems}/>
             </div>
 

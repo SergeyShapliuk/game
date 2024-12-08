@@ -18,15 +18,17 @@ function StartLevel({currentLevel, onPress}: { currentLevel: number, onPress: ()
                     exit={{opacity: 0, y: 20}}
                     transition={{duration: 0.5}} className={classes.container}
                     style={{position: "relative", overflow: "hidden"}}>
-            <img src={recipe} alt={"Картинка"}
-                 style={{
-                     position: "absolute",
-                     width: responseSize(70),
-                     top: -30,
-                     right: 0,
-                     transform: "rotate(31deg)"
-                 }}/>
-            <Panel count={starCounter}/>
+            <header style={{paddingTop: responseSize(17)}}>
+                <img src={recipe} alt={"Картинка"}
+                     style={{
+                         position: "absolute",
+                         width: responseSize(70),
+                         top: -30,
+                         right: 0,
+                         transform: "rotate(31deg)"
+                     }}/>
+                <Panel count={starCounter}/>
+            </header>
             <div className={classes.title}
                  style={{fontSize: responseSize(40), lineHeight: responseSize(47), marginTop: responseSize(43)}}>
                 Поздрав<br/>
@@ -49,15 +51,21 @@ function StartLevel({currentLevel, onPress}: { currentLevel: number, onPress: ()
             </div>
             <div style={{
                 alignSelf: "stretch",
-                padding: "30px 23px 23px 16px",
-                paddingTop: responseSize(7),
-                paddingRight: responseSize(23),
-                paddingLeft: responseSize(16),
-                paddingBottom: responseSize(32)
+                marginTop: "auto",
+                marginBottom: responseSize(42)
             }}>
-                <Score/>
+                <div style={{
+                    // alignSelf: "stretch",
+                    // padding: "30px 23px 23px 16px",
+                    paddingTop: responseSize(7),
+                    paddingRight: responseSize(23),
+                    paddingLeft: responseSize(16),
+                    paddingBottom: responseSize(23)
+                }}>
+                    <Score/>
+                </div>
+                <Button text={`Уровень ${currentLevel + 1}`} icon={true} onPress={onPress}/>
             </div>
-            <Button text={`Уровень ${currentLevel + 1}`} icon={true} onPress={onPress}/>
         </motion.div>
     );
 }

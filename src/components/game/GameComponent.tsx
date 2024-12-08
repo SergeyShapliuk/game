@@ -7,11 +7,14 @@ import {LevelItems} from "../../data/LevelItems";
 import FinishGame from "./FinishGame";
 import {useCounter} from "../../common/ context/CounterProvider";
 import {useService} from "../../common/ context/ServiceProvider";
+import useScreenSize from "../../hooks/useScreenSize";
+import classes from "./GameComponent.module.css";
 
 
 function GameComponent() {
     const {starCounter} = useCounter();
     const {setAnimation} = useService();
+    const {responseSize} = useScreenSize();
 
     const [start, setStart] = useState<boolean>(false);
     const [levelIndex, setLevelIndex] = useState<number>(0);
@@ -42,7 +45,7 @@ function GameComponent() {
             {!start && levelIndex === 0 && !levelComplete && <StartGame start={levelStartHandler}/>}
             {!start && levelComplete && levelIndex > 0 && levelIndex < 14 &&
             <StartLevel currentLevel={LevelItems[levelIndex].id} onPress={levelStartHandler}/>}
-            {start && <Game levelItems={LevelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
+        {start && <Game levelItems={LevelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
             {!start && levelComplete && levelIndex === 0 &&
             <FirstComplete currentLevel={LevelItems[levelIndex].id} onPress={levelStartHandler}/>}
             {!start && levelIndex === 14 && levelComplete &&

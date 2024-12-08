@@ -6,11 +6,6 @@
     color-scheme: light dark;
     color: #FFFFFF !important;
 
-    background: linear-gradient(90deg, #1C325C 0%, #172E55 52%, #162D54 79.5%, #162D54 100%);
-    /*min-height: 100vh;*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -28,24 +23,27 @@
 /*a:hover {*/
 /*    color: #535bf2;*/
 /*}*/
-
-body {
+html, body {
     width: 100%;
-    /*max-width: 453px;*/
-    min-height: 100vh;
+    height: 100%;
     /*display: flex;*/
-    /*flex-direction: column;*/
     /*justify-content: center;*/
     /*align-items: center;*/
+    background: #1a2c52 linear-gradient(90deg, #1C325C 0%, #172E55 52%, #162D54 79.5%, #162D54 100%);
+    margin: 0 auto;
     padding: 0;
-    margin: 0;
-    overflow: hidden;
 }
 
-/*h1 {*/
-/*    font-size: 3.2em;*/
-/*    line-height: 1.1;*/
-/*}*/
+body {
+    /*width: 100vw;*/
+    /*height: 100%;*/
+    /*overflow: scroll;*/
+    /*padding-bottom: env(safe-area-inset-bottom,50px);*/
+    /*margin-bottom: 100px;*/
+    /*overflow: hidden;*/
+
+}
+
 
 button {
     /*border-radius: 8px;*/
@@ -69,58 +67,3 @@ button {
 /*button:focus-visible {*/
 /*    outline: 4px auto -webkit-focus-ring-color;*/
 /*}*/
-@media (min-width: 1024px) {
-    body {
-        max-width: 453px;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 1513px) {
-    body {
-        max-width: 85%;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 2000px) {
-    body {
-        max-width: 80%;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 2700px) {
-    body {
-        max-width: 70%;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 3400px) {
-    body {
-        max-width: 60%;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 4100px) {
-    body {
-        max-width: 50%;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 4800px) {
-    body {
-        max-width: 40%;
-        min-height: 100vh;
-    }
-}
-
-@media (min-width: 5500px) {
-    body {
-        max-width: 30%;
-        min-height: 100vh;
-    }
-}

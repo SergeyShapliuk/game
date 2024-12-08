@@ -15,15 +15,17 @@ function FinishGame({star, onPress}: { star: number, onPress: () => void }) {
                     exit={{opacity: 0, y: 20}}
                     transition={{duration: 0.5}} className={classes.container}
                     style={{position: "relative", overflow: "hidden"}}>
-            <img src={recipe} alt={"Картинка"}
-                 style={{
-                     position: "absolute",
-                     width: responseSize(70),
-                     top: -30,
-                     right: 0,
-                     transform: "rotate(31deg)"
-                 }}/>
-            <Panel count={star}/>
+            <header style={{paddingTop: responseSize(17)}}>
+                <img src={recipe} alt={"Картинка"}
+                     style={{
+                         position: "absolute",
+                         width: responseSize(70),
+                         top: -30,
+                         right: 0,
+                         transform: "rotate(31deg)"
+                     }}/>
+                <Panel count={star}/>
+            </header>
             <div className={classes.title}
                  style={{fontSize: responseSize(40), lineHeight: responseSize(47), marginTop: responseSize(43)}}>
                 Ничего<br/>
@@ -42,7 +44,9 @@ function FinishGame({star, onPress}: { star: number, onPress: () => void }) {
             </div>
             <img src={image} alt={"Картинка"}
                  style={{width: responseSize(230), paddingTop: 15, paddingBottom: responseSize(55)}}/>
-            <Button text={"Начать сначала"} onPress={onPress}/>
+            <div style={{marginTop: "auto", marginBottom: responseSize(42)}}>
+                <Button text={"Начать сначала"} onPress={onPress}/>
+            </div>
         </motion.div>
     );
 }

@@ -20,7 +20,7 @@ function GameError({icon, resume}: { icon: string | undefined, resume: () => voi
             alignItems: "center",
             backgroundColor: "#000000D9",
             paddingTop: "35%",
-            zIndex: 3
+            zIndex: 10
         }}>
             <div className={classes.title}
                  style={{fontSize: responseSize(40), lineHeight: responseSize(63)}}>

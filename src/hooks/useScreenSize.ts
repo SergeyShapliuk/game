@@ -16,6 +16,11 @@ const useScreenSize = () => {
             const width = window.visualViewport ? window.visualViewport.width : window.innerWidth;
             const height = window.visualViewport ? window.visualViewport.height : window.innerHeight;
             setScreenSize({width, height});
+            // document.querySelector(".app").clientHeight='1000px';
+            // document.getElementById("app").style.height =window.innerHeight;
+            // if (appContainer) {
+            //     appContainer.style.height = window.innerHeight;
+            // }
             // let newWidth = 100;
             // if (width > 453) {
             //     const excessWidth = width ; // Количество пикселей, превышающих порог

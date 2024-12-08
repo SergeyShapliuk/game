@@ -20,12 +20,12 @@ function GamePause({star, level, resume}: { star: number, level: number, resume:
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            // justifyContent: "center",
             alignItems: "center",
             backgroundColor: "#000000D9",
-            zIndex: 3
+            zIndex: 10
         }}>
-            <header>
+            <header style={{marginTop: responseSize(17)}}>
                 <Panel count={star}/>
             </header>
             <div className={classes.title}
@@ -60,11 +60,11 @@ function GamePause({star, level, resume}: { star: number, level: number, resume:
                      fontSize: responseSize(20),
                      lineHeight: responseSize(29),
                      fontWeight: "900",
-                     marginTop: responseSize(10)
+                     marginTop: responseSize(20)
                  }}>
                 Посмотреть Рецепт
             </div>
-            <div style={{marginTop: responseSize(35)}}>
+            <div style={{marginTop: "auto", marginBottom: responseSize(42)}}>
                 <Button text={"Продолжить"} onPress={resume}/>
             </div>
         </motion.div>

@@ -20,7 +20,7 @@ function FirstComplete({currentLevel, onPress}: { currentLevel: number, onPress:
                     exit={{opacity: 0, y: 20}}
                     transition={{duration: 0.5}} className={classes.container}>
             {!openRecipe ? (<>
-                <header>
+                <header style={{paddingTop: responseSize(38)}}>
                     <div className={classes.title}
                          style={{fontSize: responseSize(40), lineHeight: responseSize(47)}}>
                         Спасибо!
@@ -54,21 +54,28 @@ function FirstComplete({currentLevel, onPress}: { currentLevel: number, onPress:
                 </div>
 
                 <div style={{
+                    marginTop: "auto",
                     alignSelf: "stretch",
-                    padding: "30px 23px 23px 16px",
+                    // padding: "30px 23px 0px 16px",
                     paddingTop: responseSize(30),
                     paddingRight: responseSize(23),
                     paddingLeft: responseSize(16),
-                    paddingBottom: responseSize(32)
+                    paddingBottom: responseSize(23)
                 }}>
                     <Score/>
                 </div>
             </>) : (
                 <img src={fullRecipe} alt={"Картинка"}
-                     style={{height: responseSize(680), paddingBottom: responseSize(30)}}/>
+                     style={{
+                         height: responseSize(680),
+                         paddingTop: responseSize(35),
+                         paddingBottom: responseSize(30)
+                     }}/>
             )}
-            <Button text={!openRecipe ? `Уровень ${currentLevel + 1}` : "Закрыть"} icon={!openRecipe}
-                    onPress={!openRecipe ? onPress : () => setOpenRecipe(false)}/>
+            <div style={{marginBottom: responseSize(42)}}>
+                <Button text={!openRecipe ? `Уровень ${currentLevel + 1}` : "Закрыть"} icon={!openRecipe}
+                        onPress={!openRecipe ? onPress : () => setOpenRecipe(false)}/>
+            </div>
         </motion.div>
     );
 }
