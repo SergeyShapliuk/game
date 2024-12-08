@@ -1,14 +1,10 @@
 import {motion} from "motion/react";
-import stars from "../../assets/stars.webp";
 import bowl2 from "../../assets/bowl2.webp";
 import bowl1 from "../../assets/bowl1.webp";
 import tomato from "../../assets/bg-tomato.webp";
 import carrot from "../../assets/bg-carrot.webp";
 import useScreenSize from "../../hooks/useScreenSize";
 import {useService} from "../../common/ context/ServiceProvider";
-import stars1 from "../../assets/stars1.webp";
-import stars2 from "../../assets/stars2.webp";
-import {useEffect, useState} from "react";
 import Stars from "./Stars";
 
 

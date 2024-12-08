@@ -7,14 +7,11 @@ import {LevelItems} from "../../data/LevelItems";
 import FinishGame from "./FinishGame";
 import {useCounter} from "../../common/ context/CounterProvider";
 import {useService} from "../../common/ context/ServiceProvider";
-import useScreenSize from "../../hooks/useScreenSize";
-import classes from "./GameComponent.module.css";
 
 
 function GameComponent() {
     const {starCounter} = useCounter();
     const {setAnimation} = useService();
-    const {responseSize} = useScreenSize();
 
     const [start, setStart] = useState<boolean>(false);
     const [levelIndex, setLevelIndex] = useState<number>(0);
