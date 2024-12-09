@@ -32,7 +32,7 @@ function FirstComplete({currentLevel, onPress}: { currentLevel: number, onPress:
                     </div>
                 </header>
                 <img onClick={() => setOpenRecipe(true)} src={recipe} alt={"Картинка"}
-                     style={{width: responseSize(182)}}/>
+                     style={{width: responseSize(182), cursor: "pointer"}}/>
                 <div className={classes.description}
                      style={{
                          display: "flex",
@@ -69,7 +69,7 @@ function FirstComplete({currentLevel, onPress}: { currentLevel: number, onPress:
                      style={{
                          height: responseSize(680),
                          paddingTop: responseSize(35),
-                         paddingBottom: responseSize(30),
+                         paddingBottom: responseSize(30)
                      }}/>
             )}
             <div style={{marginBottom: responseSize(42)}}>

@@ -21,7 +21,8 @@ function Button({onPress, text, icon, width}: ButtonProps) {
             background: "linear-gradient(180deg, #F2DEB9 0%, #DABB98 100%)",
             borderRadius: responseSize(50),
             boxShadow: "0px 1px 0px 0px #FFFFFF96",
-            gap: responseSize(7)
+            gap: responseSize(7),
+            cursor: "pointer"
         }}>
             {icon && <img src={play} alt="" style={{width: responseSize(27)}}/>}
             <div style={{
