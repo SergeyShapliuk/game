@@ -21,6 +21,7 @@
 .level {
     display: inline-flex;
     align-items: center;
+    /*width: 20%;*/
 }
 
 .gameContainer {

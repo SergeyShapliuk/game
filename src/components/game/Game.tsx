@@ -2,7 +2,7 @@ import * as React from "react";
 import {useCallback, useEffect, useRef, useState} from "react";
 import classes from "./Game.module.css";
 
-import image from "../../assets/small-image.webp";
+// import image from "../../assets/small-image.webp";
 import star from "../../assets/star.webp";
 // import carrot from "../../assets/carrot.webp";
 // import broccoli from "../../assets/broccoli.webp";
@@ -22,6 +22,8 @@ import GameError from "./GameError";
 import {Foods, LeveItems} from "../../data/LevelItems";
 import Pot from "./Pot";
 import {useService} from "../../common/ context/ServiceProvider";
+import {LevelImage} from "../../common/levelImage";
+import MemoAvatarMasked from "../svg/AvatarMasked";
 
 
 // const otherIngredients = [
@@ -386,17 +388,23 @@ function Game({levelItems, levelComplete}: GameProps) {
                         lineHeight: responseFontSize(24)
                     }}>{`Yp.${collected.id}
         `}</span>
-                    <div style={{
-                        width: responseSize(58),
-                        height: responseSize(58),
-                        display: "inline-flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        border: "#6CA2FF solid 3px",
-                        borderRadius: responseSize(50)
-                    }}>
-                        <img src={image} alt="" style={{width: responseSize(58), marginBottom: responseSize(15)}}/>
-                    </div>
+                    {/*<div style={{*/}
+                    {/*    position: "relative",*/}
+                    {/*    width: responseSize(58),*/}
+                    {/*    height: responseSize(58),*/}
+                    {/*    display: "inline-flex",*/}
+                    {/*    justifyContent: "center",*/}
+                    {/*    alignItems: "center",*/}
+                    {/*    border: "#6CA2FF solid 3px",*/}
+                    {/*    borderRadius: responseSize(50),*/}
+                    {/*    // mask: "radial-gradient(circle, black 50%, transparent 51%)",*/}
+                    {/*    // WebkitMask: "radial-gradient(circle, black 50%, transparent 51%)",*/}
+                    {/*    zIndex:1*/}
+                    {/*}}>*/}
+                        <MemoAvatarMasked width={responseSize(64)} image={LevelImage[1]}/>
+                        {/*<img src={LevelImage[levelItems.id - 1]} alt=""*/}
+                        {/*     style={{position: "absolute", width: responseSize(58),height:'auto', bottom: 0}}/>*/}
+                    {/*</div>*/}
                 </div>
             </header>
             <div
