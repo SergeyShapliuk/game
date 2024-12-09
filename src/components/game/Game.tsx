@@ -435,6 +435,9 @@ const FallingItem = React.memo(({item}: any) => {
             style={{
                 width: responseSize(42),
                 height: responseSize(42),
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
                 left: `${item.x}%`,
                 top: `${item.y}%`
             }}
@@ -448,7 +451,11 @@ const FallingItem = React.memo(({item}: any) => {
             //     //     // damping: 25 // Затухание
             // }}
         >
-            <img src={item.icon} alt="" style={{width: "100%", height: "100%"}}/>
+            <img src={item.icon} alt="" style={{
+                width: "100%", height: "100%",
+                maxWidth: responseSize(32),
+                maxHeight: responseSize(32)
+            }}/>
         </div>
     );
 });

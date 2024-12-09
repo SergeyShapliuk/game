@@ -1,4 +1,5 @@
 import {motion} from "motion/react";
+import stars from "../../assets/stars1.webp";
 import bowl2 from "../../assets/bowl2.webp";
 import bowl1 from "../../assets/bowl1.webp";
 import tomato from "../../assets/bg-tomato.webp";
@@ -12,25 +13,23 @@ function Effect() {
     const {isAnimation} = useService();
     const {screenSize, responseSize} = useScreenSize();
 
-    const min = 20;
-    const max = 35;
+
     return (
         <>
             {isAnimation ? (
                 <>
                     <Stars/>
                     <motion.img src={bowl2} alt={""}
-                        // initial={{x: 0, y: 0}}
+                        // initial={{x: responseSize(-185), y: responseSize(73)}}
                                 animate={{
                                     x: ["0%", "-10%", "10%", "-10%", "0%"],
-                                    y: [-screenSize.height / 4, screenSize.height],
-                                    rotate: [0, 360]
+                                    y: [-screenSize.height / 4, screenSize.height]
                                 }}
                                 transition={{
-                                    duration: Math.random() * (max - min) + min,
+                                    duration: 35,
                                     repeat: Infinity,
                                     repeatType: "loop",
-                                    delay: Math.random() * 10,
+                                    delay: 10,
                                     ease: "linear"
                                 }}
                         // onAnimationComplete={handleAnimationComplete}
@@ -44,14 +43,13 @@ function Effect() {
                         // initial={{x: 0, y: 0}}
                                 animate={{
                                     x: ["0%", "-10%", "10%", "-10%", "0%"],
-                                    y: [-screenSize.height / 4, screenSize.height],
-                                    rotate: [0, 360]
+                                    y: [-screenSize.height / 4, screenSize.height]
                                 }}
                                 transition={{
-                                    duration: Math.random() * (max - min) + min,
+                                    duration: 30,
                                     repeat: Infinity,
                                     repeatType: "loop",
-                                    delay: Math.random() * 10,
+                                    delay: 5,
                                     ease: "linear"
                                 }}
                                 style={{
@@ -68,11 +66,23 @@ function Effect() {
                                     rotate: [0, 360]
                                 }}
                                 transition={{
-                                    duration: Math.random() * (max - min) + min,
-                                    repeat: Infinity,
-                                    repeatType: "loop",
-                                    delay: Math.random() * 10,
-                                    ease: "linear"
+                                    x: {
+                                        duration: 25,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "linear"
+                                    },
+                                    y: {
+                                        duration: 20,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "linear"
+                                    },
+                                    rotate: {
+                                        duration: 50,
+                                        repeat: Infinity,
+                                        ease: "linear"
+                                    }
                                 }}
                                 style={{
                                     position: "absolute",
@@ -88,11 +98,23 @@ function Effect() {
                                     rotate: [0, 360]
                                 }}
                                 transition={{
-                                    duration: Math.random() * (max - min) + min,
-                                    repeat: Infinity,
-                                    repeatType: "loop",
-                                    delay: Math.random() * 10,
-                                    ease: "linear"
+                                    x: {
+                                        duration: 20,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "linear"
+                                    },
+                                    y: {
+                                        duration: 25,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "linear"
+                                    },
+                                    rotate: {
+                                        duration: 50,
+                                        repeat: Infinity,
+                                        ease: "linear"
+                                    }
                                 }}
                                 style={{
                                     position: "absolute",
@@ -102,6 +124,15 @@ function Effect() {
                                 }}/>
                 </>) : (
                 <>
+                    <div style={{
+                        position: "absolute",
+                        width: "100%",
+                        height: "100%",
+                        backgroundImage: `url(${stars})`,
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        zIndex: 0
+                    }}/>
                     <img src={bowl2} alt={""}
                          style={{
                              position: "absolute",

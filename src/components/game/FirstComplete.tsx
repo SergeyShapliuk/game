@@ -46,7 +46,7 @@ function FirstComplete({currentLevel, onPress}: { currentLevel: number, onPress:
                          gap: responseSize(6)
                      }}>
                     <img src={LevelImage[1]} alt={"Картинка"}
-                         style={{width: responseSize(88)}}/>
+                         style={{width: responseSize(88), height: responseSize(76)}}/>
                     СупПространственные
                     существа еще нуждаются
                     в твоей помощи.

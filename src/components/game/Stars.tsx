@@ -14,14 +14,14 @@ function Stars() {
                     top: 0,
                     left: 0,
                     width: "100%",
-                    height: "100vh",
+                    height: "100%",
                     backgroundImage: `url(${stars1})`,
                     backgroundSize: "100% 200%",
                     backgroundRepeat: "repeat-y"
                 }}
                 animate={{backgroundPositionY: ["100%", "-100%"]}}
                 transition={{
-                    duration: 10,
+                    duration: 15,
                     repeat: Infinity,
                     repeatType: "loop",
                     ease: "linear"

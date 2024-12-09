@@ -33,8 +33,8 @@ function StartGame({start}: { start: () => void }) {
                          width: responseSize(100),
                          left: "50%",
                          transform: "translateX(87%)",
-                         bottom: "52%",
-                         zIndex: 0
+                         bottom: "38%",
+                         zIndex: 1
                      }}/>
             </div>
             <div className={classes.description}

@@ -42,7 +42,7 @@ function GameComponent() {
             {!start && levelIndex === 0 && !levelComplete && <StartGame start={levelStartHandler}/>}
             {!start && levelComplete && levelIndex > 0 && levelIndex < 14 &&
             <StartLevel currentLevel={LevelItems[levelIndex].id} onPress={levelStartHandler}/>}
-        {start && <Game levelItems={LevelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
+            {start && <Game levelItems={LevelItems[levelIndex]} levelComplete={levelCompleteHandler}/>}
             {!start && levelComplete && levelIndex === 0 &&
             <FirstComplete currentLevel={LevelItems[levelIndex].id} onPress={levelStartHandler}/>}
             {!start && levelIndex === 14 && levelComplete &&
