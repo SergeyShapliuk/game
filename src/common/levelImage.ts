@@ -33,5 +33,23 @@ export const LevelImage = [
     level15
 
 ];
+export const LevelAvatarImage: { image: string, bottom: number, right: number, width?: number, }[] = [
+    {image: level1, bottom: 5, right: 0},
+    {image: level2, bottom: 5, right: 0},
+    {image: level3, bottom: 1, right: 0},
+    {image: level4, bottom: 1, right: 0},
+    {image: level5, bottom: 3, right: 0},
+    {image: level6, bottom: 10, right: 0, width: 48},
+    {image: level7, bottom: 7, right: 3},
+    {image: level8, bottom: 4, right: -0.5},
+    {image: level9, bottom: 5, right: 0, width: 45},
+    {image: level10, bottom: 0, right: 0},
+    {image: level11, bottom: 0, right: 1, width: 63},
+    {image: level12, bottom: 5, right: 0},
+    {image: level13, bottom: 5, right: 0},
+    {image: level14, bottom: 0, right: 0},
+    {image: level15, bottom: 7, right: -0.5, width: 55}
+
+];
 
 

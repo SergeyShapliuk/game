@@ -65,11 +65,11 @@ function FirstComplete({currentLevel, onPress}: { currentLevel: number, onPress:
                     <Score/>
                 </div>
             </>) : (
-                <img src={fullRecipe} alt={"Картинка"}
+                <img src={fullRecipe} alt=""
                      style={{
                          height: responseSize(680),
                          paddingTop: responseSize(35),
-                         paddingBottom: responseSize(30)
+                         paddingBottom: responseSize(30),
                      }}/>
             )}
             <div style={{marginBottom: responseSize(42)}}>

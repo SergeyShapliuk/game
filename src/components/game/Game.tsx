@@ -22,8 +22,7 @@ import GameError from "./GameError";
 import {Foods, LeveItems} from "../../data/LevelItems";
 import Pot from "./Pot";
 import {useService} from "../../common/ context/ServiceProvider";
-import {LevelImage} from "../../common/levelImage";
-import MemoAvatarMasked from "../svg/AvatarMasked";
+import {LevelAvatarImage} from "../../common/levelImage";
 
 
 // const otherIngredients = [
@@ -39,7 +38,7 @@ import MemoAvatarMasked from "../svg/AvatarMasked";
 
 // const ROWS = [10, 35, 60, 80];
 // const ROWS = [1, 2, 3, 4];
-const swipeThreshold = 70; // Минимальная длина свайпа для срабатывания
+const swipeThreshold = 10; // Минимальная длина свайпа для срабатывания
 const minSwipeSpeed = 3;
 
 type GameProps = {
@@ -388,23 +387,30 @@ function Game({levelItems, levelComplete}: GameProps) {
                         lineHeight: responseFontSize(24)
                     }}>{`Yp.${collected.id}
         `}</span>
-                    {/*<div style={{*/}
-                    {/*    position: "relative",*/}
-                    {/*    width: responseSize(58),*/}
-                    {/*    height: responseSize(58),*/}
-                    {/*    display: "inline-flex",*/}
-                    {/*    justifyContent: "center",*/}
-                    {/*    alignItems: "center",*/}
-                    {/*    border: "#6CA2FF solid 3px",*/}
-                    {/*    borderRadius: responseSize(50),*/}
-                    {/*    // mask: "radial-gradient(circle, black 50%, transparent 51%)",*/}
-                    {/*    // WebkitMask: "radial-gradient(circle, black 50%, transparent 51%)",*/}
-                    {/*    zIndex:1*/}
-                    {/*}}>*/}
-                        <MemoAvatarMasked width={responseSize(64)} image={LevelImage[1]}/>
-                        {/*<img src={LevelImage[levelItems.id - 1]} alt=""*/}
-                        {/*     style={{position: "absolute", width: responseSize(58),height:'auto', bottom: 0}}/>*/}
-                    {/*</div>*/}
+                    <div style={{
+                        position: "relative",
+                        width: responseSize(58),
+                        height: responseSize(58),
+                        display: "inline-flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "#6CA2FF solid 3px",
+                        backgroundColor: "#131439",
+                        borderRadius: responseSize(50),
+                        // mask: "radial-gradient(circle, black 50%, transparent 51%)",
+                        // WebkitMask: "radial-gradient(circle, black 50%, transparent 51%)",
+                        zIndex: 1
+                    }}>
+                        {/*<MemoAvatarMasked width={responseSize(64)} image={LevelImage[2]}/>*/}
+                        <img src={LevelAvatarImage[levelItems.id - 1].image} alt=""
+                             style={{
+                                 position: "absolute",
+                                 width: responseSize(LevelAvatarImage[levelItems.id - 1].width ?? 58),
+                                 height: "auto",
+                                 right: responseSize(LevelAvatarImage[levelItems.id - 1].right),
+                                 bottom: responseSize(LevelAvatarImage[levelItems.id - 1].bottom)
+                             }}/>
+                    </div>
                 </div>
             </header>
             <div
@@ -460,9 +466,11 @@ const FallingItem = React.memo(({item}: any) => {
             // }}
         >
             <img src={item.icon} alt="" style={{
-                width: "100%", height: "100%",
-                maxWidth: responseSize(32),
-                maxHeight: responseSize(32)
+                width: "100%",
+                height: "100%",
+                objectFit: "contain"
+                // maxWidth: responseSize(32),
+                // maxHeight: responseSize(32)
             }}/>
         </div>
     );

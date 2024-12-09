@@ -56,15 +56,15 @@ const AvatarMasked: React.FC<AvatarMaskedProps> = ({image, ...props}) => (
                     mask: "url(#mask)"
                 }}
             />
-            <image
-                xlinkHref={image}
-                width={238}
-                height={336}
-                style={{
-                    clipPath: `url(#clippath)`
-                }}
-                transform="matrix(.38 0 0 .38 -14.4 -.6)"
-            />
+            <g clipPath="url(#clippath)">
+                <image
+                    xlinkHref={image}
+                    width={238}
+                    height={336}
+                    transform="matrix(.38 0 0 .38 -14.4 -.6)"
+                />
+            </g>
+
         </g>
     </svg>
 );
