@@ -36,7 +36,7 @@ function GameComponent() {
         }
         setAnimation(true);
     };
-// console.log(levelIndex)
+
     return (
         <>
             {!start && levelIndex === 0 && !levelComplete && <StartGame start={levelStartHandler}/>}

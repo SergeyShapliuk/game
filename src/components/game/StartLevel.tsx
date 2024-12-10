@@ -43,7 +43,7 @@ function StartLevel({currentLevel, onPress}: { currentLevel: number, onPress: ()
                 </div>
                 <div className={classes.subTitle}
                      style={{fontSize: responseSize(24), lineHeight: responseSize(32.74)}}>
-                    Вы переходите
+                    Ты переходишь
                     на новый уровень!
                 </div>
                 <img src={LevelImage[currentLevel]} alt={"Картинка"} style={{width: responseSize(238)}}/>

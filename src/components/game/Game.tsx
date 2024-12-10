@@ -1,16 +1,7 @@
 import * as React from "react";
 import {useCallback, useEffect, useRef, useState} from "react";
 import classes from "./Game.module.css";
-
-// import image from "../../assets/small-image.webp";
 import star from "../../assets/star.webp";
-// import carrot from "../../assets/carrot.webp";
-// import broccoli from "../../assets/broccoli.webp";
-// import chicken from "../../assets/chicken.webp";
-// import chillPepper from "../../assets/chill-pepper.webp";
-// import rice from "../../assets/rice.webp";
-// import shrimp from "../../assets/shrimp.webp";
-// import shroom from "../../assets/shroom.webp";
 import {motion} from "motion/react";
 import Score from "../ui/Score";
 import useScreenSize from "../../hooks/useScreenSize";
@@ -25,19 +16,6 @@ import {useService} from "../../common/ context/ServiceProvider";
 import {LevelAvatarImage} from "../../common/levelImage";
 
 
-// const otherIngredients = [
-//     {name: "carrot", icon: carrot},
-//     {name: "chicken", icon: chicken},
-//     {name: "chillPepper", icon: chillPepper},
-//     {name: "shrimp", icon: shrimp},
-//     {name: "rice", icon: rice},
-//     {name: "shroom", icon: shroom},
-//     {name: "broccoli", icon: broccoli}
-// ];
-
-
-// const ROWS = [10, 35, 60, 80];
-// const ROWS = [1, 2, 3, 4];
 const swipeThreshold = 10; // Минимальная длина свайпа для срабатывания
 const minSwipeSpeed = 3;
 
@@ -73,16 +51,10 @@ function Game({levelItems, levelComplete}: GameProps) {
     const [gameRect, setGameRect] = useState<DOMRect | null>(null); // Позиция самолета по оси X
 
     const [fallingSpeed] = useState(0.2);
-    // const [isPaused, setIsPaused] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
+    const [isBonus, setBonus] = useState<boolean>(false);
     const [itemSize, setItemSize] = useState<number>();
 
-    // const gameZoneWidthInPercent = (gameZoneWidth / screenSize.width) * 100;
-    // console.log("targetPosition", planeRef.current?.getBoundingClientRect());
-
-    // console.log("planeRect", planeRef.current);
-    // console.log("gameRect", gameRect);
-    // console.log("planePosition", planePosition);
     useEffect(() => {
         const updateDimensions = () => {
             if (planeRef.current && gameZoneRef.current) {
@@ -110,7 +82,7 @@ function Game({levelItems, levelComplete}: GameProps) {
         const adaptiveRatio = Math.min(widthRatio, heightRatio);
         return size * adaptiveRatio;
     };
-    // console.log("gameZoneWidth", gameZoneWidth);
+
     const generateFallingItems = () => {
         if (!gameRect || !itemSize) return;
         const sectorWidth = gameRect?.width / 4;
@@ -120,9 +92,7 @@ function Game({levelItems, levelComplete}: GameProps) {
         const xPositionPercent = (xPos / gameRect?.width) * 100;
         const itemPercent = (itemSize / gameRect?.width) * 100;
         const xPosition = xPositionPercent - itemPercent / 2;
-        // console.log("gameZoneWidth", xPos);
-        // const xPosition = ROWS[Math.floor(Math.random() * ROWS.length)];
-        // const randomItem = levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
+
         const itemsToAdd: any[] = [];
         const randomChoice = Math.random(); // Генерация случайного числа от 0 до 1
         if (randomChoice < 0.5) {
@@ -131,9 +101,9 @@ function Game({levelItems, levelComplete}: GameProps) {
                 levelItems.levelItems[Math.floor(Math.random() * levelItems.levelItems.length)];
             itemsToAdd.push({
                 ...randomIngredient,
-                id: new Date().getTime(), // Уникальный ID
-                x: xPosition, // Позиция по оси X
-                y: 0 // Начальная позиция Y
+                id: new Date().getTime(),
+                x: xPosition,
+                y: 0
             });
         } else {
             const random = Math.random();
@@ -141,8 +111,7 @@ function Game({levelItems, levelComplete}: GameProps) {
                 const levelFoodItems = Object.keys(levelItems);
                 const remainingFoods = Foods.filter(food => !levelFoodItems.includes(food.name));
                 const randomFood = remainingFoods[Math.floor(Math.random() * remainingFoods.length)];
-                // const randomIndex = Math.floor(Math.random() * otherIngredients.length);
-                // const randomItem = otherIngredients[randomIndex];
+
                 itemsToAdd.push({
                     item: randomFood.name, // Уникальное имя звезды
                     id: new Date().getTime(), // Уникальный ID
@@ -229,8 +198,6 @@ function Game({levelItems, levelComplete}: GameProps) {
                             const itemX = (item.x / 100) * gameRect.width;
                             const itemY = (item.y / 100) * gameRect.height;
 
-                            // console.log("itemX", itemX);
-                            // console.log("planeX", planeX);
                             // Проверяем столкновение с самолетом
                             const isCollected =
                                 itemX >= planeX && // Предмет должен быть правее левого края
@@ -241,6 +208,7 @@ function Game({levelItems, levelComplete}: GameProps) {
                             if (isCollected) {
                                 if (item.item === "star") {
                                     setCountStar(prevCount => prevCount + 1);
+                                    setBonus(true);
                                 } else {
                                     setCollected((prev) => ({
                                         ...prev, // Оставляем остальные свойства объекта, включая id
@@ -270,18 +238,6 @@ function Game({levelItems, levelComplete}: GameProps) {
         return () => cancelAnimationFrame(animationFrame);
     }, [gameRect, isPaused]);
 
-    // Управление самолетом через мышь
-    // const handleMouseMove = useCallback((e) => {
-    //     const container = e.target.getBoundingClientRect();
-    //     const x = ((e.clientX - container.left) / container.width) * 100;
-    //     // Находим ближайший ряд
-    //     const closestRow = ROWS.reduce(
-    //         (closest, row, idx) =>
-    //             Math.abs(row - x) < Math.abs(ROWS[closest] - x) ? idx : closest,
-    //         0
-    //     );
-    //     setPlaneRow(closestRow); // Устанавливаем целевой ряд
-    // }, []);
 
     const movePlane = useCallback((direction: number) => {
         const currentPlaneRect = planeRef.current && planeRef.current!.getBoundingClientRect();
@@ -301,7 +257,6 @@ function Game({levelItems, levelComplete}: GameProps) {
             if (!isNaN(xPosition)) {
                 setPlanePosition(xPosition); // Обновляем позицию только если она корректна
             }
-
             return newIndex;
         });
     }, [gameRect, planePosition, planeRowIndex]);
@@ -322,8 +277,6 @@ function Game({levelItems, levelComplete}: GameProps) {
         const deltaX = touchX - startTouchX.current; // Считаем смещение
         const elapsedTime = (Date.now() - startTouchTime.current) / 1000; // Время свайпа в секундах
         const swipeSpeed = Math.abs(deltaX) / elapsedTime; // Скорость свайпа
-        // console.log("delta", deltaX);
-        // console.log("swipeSpeed", swipeSpeed);
 
         if (Math.abs(deltaX) > swipeThreshold && swipeSpeed > minSwipeSpeed) {
             if (deltaX > 0) {
@@ -331,17 +284,10 @@ function Game({levelItems, levelComplete}: GameProps) {
             } else if (deltaX < 0) {
                 movePlane(-1); // Свайп влево (переместить вправо)
             }
-            // setPlaneX((prevX) => prevX + deltaX); // Обновляем положение самолета по оси X
-            // startTouchX.current = touchX; // Обновляем начальную точку для следующего движения
             startTouchX.current = 0;
             startTouchTime.current = 0;
         }
     };
-
-    // Завершение жеста
-    // const handleTouchEnd = () => {
-    //     startTouchX.current = null; // Сбрасываем начальную точку
-    // };
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -397,8 +343,6 @@ function Game({levelItems, levelComplete}: GameProps) {
                         border: "#6CA2FF solid 3px",
                         backgroundColor: "#131439",
                         borderRadius: responseSize(50),
-                        // mask: "radial-gradient(circle, black 50%, transparent 51%)",
-                        // WebkitMask: "radial-gradient(circle, black 50%, transparent 51%)",
                         zIndex: 1
                     }}>
                         {/*<MemoAvatarMasked width={responseSize(64)} image={LevelImage[2]}/>*/}
@@ -421,7 +365,7 @@ function Game({levelItems, levelComplete}: GameProps) {
 
                 <Pot row={planePosition} collectedPot={collectedPot?.icon} ref={planeRef}/>
                 {fallingItems.map((item) => (
-                    <FallingItem key={item.id} item={item}/>
+                    <FallingItem key={item.id} item={item} isBonus={isBonus}/>
                 ))}
             </div>
 
@@ -440,7 +384,7 @@ function Game({levelItems, levelComplete}: GameProps) {
 
 export default Game;
 
-const FallingItem = React.memo(({item}: any) => {
+const FallingItem = React.memo(({item, isBonus}: { item: GeneratedItem, isBonus: boolean }) => {
     const {responseSize} = useScreenSize();
     return (
         <div
@@ -449,7 +393,8 @@ const FallingItem = React.memo(({item}: any) => {
             style={{
                 width: responseSize(42),
                 height: responseSize(42),
-                display: "inline-flex",
+                display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 left: `${item.x}%`,
@@ -465,6 +410,16 @@ const FallingItem = React.memo(({item}: any) => {
             //     //     // damping: 25 // Затухание
             // }}
         >
+            <div style={{
+                color: "#F9921C",
+                fontFamily: "Nunito",
+                fontSize: responseSize(12),
+                lineHeight: responseSize(14),
+                fontWeight: "900",
+                visibility: !isBonus && item.item === "star" ? "visible" : "hidden",
+                transition: "visibility 0.3s"
+            }}>БОНУС
+            </div>
             <img src={item.icon} alt="" style={{
                 width: "100%",
                 height: "100%",
