@@ -208,7 +208,10 @@ function Game({levelItems, levelComplete}: GameProps) {
                             if (isCollected) {
                                 if (item.item === "star") {
                                     setCountStar(prevCount => prevCount + 1);
-                                    setBonus(true);
+                                    if (!isBonus) {
+                                        setBonus(true);
+                                        sessionStorage.setItem("bonus", "true");
+                                    }
                                 } else {
                                     setCollected((prev) => ({
                                         ...prev, // Оставляем остальные свойства объекта, включая id
@@ -386,6 +389,7 @@ export default Game;
 
 const FallingItem = React.memo(({item, isBonus}: { item: GeneratedItem, isBonus: boolean }) => {
     const {responseSize} = useScreenSize();
+    const bonus = sessionStorage.getItem("bonus");
     return (
         <div
             key={item.id}
@@ -416,7 +420,7 @@ const FallingItem = React.memo(({item, isBonus}: { item: GeneratedItem, isBonus:
                 fontSize: responseSize(12),
                 lineHeight: responseSize(14),
                 fontWeight: "900",
-                visibility: !isBonus && item.item === "star" ? "visible" : "hidden",
+                visibility: !isBonus && !bonus && item.item === "star" ? "visible" : "hidden",
                 transition: "visibility 0.3s"
             }}>БОНУС
             </div>
