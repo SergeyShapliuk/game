@@ -26,10 +26,10 @@ type GameProps = {
 type GeneratedItem = {
     id: number;
     item: string;
-    amount: number;
     x: number;
     y: number;
     icon: string;
+    amount?: number;
 }
 
 function Game({levelItems, levelComplete}: GameProps) {
@@ -93,7 +93,7 @@ function Game({levelItems, levelComplete}: GameProps) {
         const itemPercent = (itemSize / gameRect?.width) * 100;
         const xPosition = xPositionPercent - itemPercent / 2;
 
-        const itemsToAdd: any[] = [];
+        const itemsToAdd: GeneratedItem[] = [];
         const randomChoice = Math.random(); // Генерация случайного числа от 0 до 1
         if (randomChoice < 0.5) {
             // Вероятность 50%
