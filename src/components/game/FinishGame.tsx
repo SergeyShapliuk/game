@@ -52,7 +52,7 @@ function FinishGame({star, onPress}: { star: number, onPress: () => void }) {
                          lineHeight: responseSize(32.74),
                          paddingTop: responseSize(10)
                      }}>
-                    И накормили
+                    И накормил
                     всех обитателей
                     СупПространства!
                 </div>
@@ -67,7 +67,7 @@ function FinishGame({star, onPress}: { star: number, onPress: () => void }) {
                      }}/>
             )}
             <div style={{marginTop: "auto", marginBottom: responseSize(42)}}>
-                <Button text={!openRecipe ? "Начать сначало" : "Закрыть"}
+                <Button text={!openRecipe ? "Начать сначала" : "Закрыть"}
                         onPress={!openRecipe ? onPress : () => setOpenRecipe(false)}/>
             </div>
         </motion.div>
