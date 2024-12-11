@@ -33,7 +33,7 @@ type GeneratedItem = {
 }
 
 function Game({levelItems, levelComplete}: GameProps) {
-    const {screenSize, responseSize, responseFontSize} = useScreenSize();
+    const {screenSize, responseSize} = useScreenSize();
     const {starCounter, setStarCounter} = useCounter();
     const {isPaused, setPaused} = useService();
 
@@ -332,8 +332,8 @@ function Game({levelItems, levelComplete}: GameProps) {
                     <span style={{
                         color: "#6CA2FF",
                         fontFamily: "Modak",
-                        fontSize: responseFontSize(16),
-                        lineHeight: responseFontSize(24)
+                        fontSize: responseSize(16),
+                        lineHeight: responseSize(24)
                     }}>{`Yp.${collected.id}
         `}</span>
                     <div style={{
