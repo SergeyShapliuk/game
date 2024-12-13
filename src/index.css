@@ -30,6 +30,9 @@ html, body {
     /*justify-content: center;*/
     /*align-items: center;*/
     background: #1a2c52 linear-gradient(90deg, #1C325C 0%, #172E55 52%, #162D54 79.5%, #162D54 100%);
+    background-image: url("./assets/stars.webp"), url('./assets/bg-bottom-layer.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
     margin: 0 auto;
     padding: 0;
 }
